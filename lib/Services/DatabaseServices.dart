@@ -49,9 +49,9 @@ class DatabaseService {
             'store': "%F0%9F%9A%80",
             'star': false,
           },
-          '%E3%80%8B%20Double%20tap%20to%20star%2Funstar%2E%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
+          '%E3%80%8B%20Double-tap%20to%20star%2Funstar%2E%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
               {
-            'item': '%E3%80%8B%20Double%20tap%20to%20star%2Funstar%2E',
+            'item': '%E3%80%8B%20Double-tap%20to%20star%2Funstar%2E',
             'category': '%20%20Hi%20there!%20%F0%9F%91%8B',
             'store': "%F0%9F%9A%80",
             'star': true,
