@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "926956597160",
+    "firebase_url": "https://beyya-4c320.firebaseio.com",
+    "project_id": "beyya-4c320",
+    "storage_bucket": "beyya-4c320.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926956597160:android:b74b68491795cf7367f79d",
+        "android_client_info": {
+          "package_name": "com.teambeyya.beyya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926956597160-960h1mligibrl37fabp8v8ltiic55vda.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teambeyya.beyya",
+            "certificate_hash": "ceb5fdab0bbdf64f15c0f70891a2a681d6082d84"
+          }
+        },
+        {
+          "client_id": "926956597160-ckf2jngal8saq2ir4dc7972r8m176tnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhKUwHoCn_Fra9CXiT4MtBiFKHsAKzg0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926956597160-ckf2jngal8saq2ir4dc7972r8m176tnt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
