@@ -108,80 +108,78 @@ class CheckList extends StatelessWidget {
                                   Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
                                       'All stores') //display items from all stores if the storeFilterDropdown is set to "All stores"
-                          ? GestureDetector(
-                              onDoubleTap: () {
+                          ? Dismissible(
+                            key: ObjectKey(_items[itemIndex]),
+                            child: ItemTile(
+                              docIdOfListInUse: data.docIdOfListInUse,
+                              item: _items[itemIndex].item,
+                              category: _items[itemIndex].category,
+                              store: _items[itemIndex].store,
+                              star: _items[itemIndex].star,
+                              toggleStar: () {
                                 String encodedItem =
-                                    _db.encodeAsFirebaseKey(text: _items[itemIndex].item);
+                                _db.encodeAsFirebaseKey(text: _items[itemIndex].item);
                                 String encodedCategory =
-                                    _db.encodeAsFirebaseKey(text: _items[itemIndex].category);
+                                _db.encodeAsFirebaseKey(text: _items[itemIndex].category);
                                 String encodedStore =
-                                    _db.encodeAsFirebaseKey(text: _items[itemIndex].store);
+                                _db.encodeAsFirebaseKey(text: _items[itemIndex].store);
                                 _db.toggleStar(
                                     star: _items[itemIndex].star,
                                     id: encodedItem +
                                         encodedCategory +
                                         encodedStore);
                               },
-                              child: Dismissible(
-                                key: ObjectKey(_items[itemIndex]),
-                                child: ItemTile(
-                                  docIdOfListInUse: data.docIdOfListInUse,
-                                  item: _items[itemIndex].item,
-                                  category: _items[itemIndex].category,
-                                  store: _items[itemIndex].store,
-                                  star: _items[itemIndex].star,
-                                ),
-                                background: SwipeRightBackground(),
-                                secondaryBackground: SwipeLeftBackground(),
-                                onDismissed: (direction) async {
-                                  String itemName=_items[itemIndex].item;
-                                  try {
-                                    String encodedItem =
-                                        _db.encodeAsFirebaseKey(
-                                            text: _items[itemIndex].item);
-                                    String encodedCategory =
-                                        _db.encodeAsFirebaseKey(
-                                            text: _items[itemIndex].category);
-                                    String encodedStore =
-                                        _db.encodeAsFirebaseKey(
-                                            text: _items[itemIndex].store);
-                                    await _db.deleteItem(
-                                        id: encodedItem +
-                                            encodedCategory +
-                                            encodedStore);
-                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text('Deleted "$itemName"'),
-                                      action: SnackBarAction(
-                                        label: 'UNDO',
-                                        textColor: Colors.amber,
-                                        onPressed: () {
-                                          _db.addItem(
-                                            item: _items[itemIndex].item,
-                                            store: _items[itemIndex].store,
-                                            category: _items[itemIndex].category,
-                                            star: _items[itemIndex].star,
-                                          );
-                                        },
-                                      ),
-                                    ));
-                                  } catch (e, s) {
-                                    await FirebaseCrashlytics.instance
-                                        .log('Item dismissed in checklist');
-                                    await FirebaseCrashlytics.instance
-                                        .recordError(
-                                            e, s,
-                                            reason:
-                                                'Item dismissed in checklist');
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return ErrorAlert(
-                                              errorMessage: e.toString());
-                                        });
-                                  }
-                                },
-                              ),
-                            )
+                            ),
+                            background: SwipeRightBackground(),
+                            secondaryBackground: SwipeLeftBackground(),
+                            onDismissed: (direction) async {
+                              String itemName=_items[itemIndex].item;
+                              try {
+                                String encodedItem =
+                                    _db.encodeAsFirebaseKey(
+                                        text: _items[itemIndex].item);
+                                String encodedCategory =
+                                    _db.encodeAsFirebaseKey(
+                                        text: _items[itemIndex].category);
+                                String encodedStore =
+                                    _db.encodeAsFirebaseKey(
+                                        text: _items[itemIndex].store);
+                                await _db.deleteItem(
+                                    id: encodedItem +
+                                        encodedCategory +
+                                        encodedStore);
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text('Deleted "$itemName"'),
+                                  action: SnackBarAction(
+                                    label: 'UNDO',
+                                    textColor: Colors.amber,
+                                    onPressed: () {
+                                      _db.addItem(
+                                        item: _items[itemIndex].item,
+                                        store: _items[itemIndex].store,
+                                        category: _items[itemIndex].category,
+                                        star: _items[itemIndex].star,
+                                      );
+                                    },
+                                  ),
+                                ));
+                              } catch (e, s) {
+                                await FirebaseCrashlytics.instance
+                                    .log('Item dismissed in checklist');
+                                await FirebaseCrashlytics.instance
+                                    .recordError(
+                                        e, s,
+                                        reason:
+                                            'Item dismissed in checklist');
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ErrorAlert(
+                                          errorMessage: e.toString());
+                                    });
+                              }
+                            },
+                          )
                           : SizedBox(); //return an empty box when the ternary operator returns false
                     },
                     itemCount: _items.length,

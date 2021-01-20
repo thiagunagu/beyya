@@ -28,58 +28,18 @@ class DatabaseService {
         'inviteesWhoDeclined': [],
         'inviteesWhoLeft': [],
         'categories': [
-          '%20%20Hi%20there!%20%F0%9F%91%8B',
           'Dairy',
           'Produce',
           'Household',
           'Misc'
         ],
         'stores': [
-          '%F0%9F%9A%80',
           "Farmer's market",
           'SuperMart',
           'Wholesale club',
           'Other'
         ],
         'items': {
-          '%E3%80%8B%20%20Few%20tips%20to%20get%20you%20started%3A%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
-              {
-            'item': '%E3%80%8B%20%20Few%20tips%20to%20get%20you%20started%3A',
-            'category': '%20%20Hi%20there!%20%F0%9F%91%8B',
-            'store': "%F0%9F%9A%80",
-            'star': false,
-          },
-          '%E3%80%8B%20Double-tap%20to%20star%2Funstar%2E%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
-              {
-            'item': '%E3%80%8B%20Double-tap%20to%20star%2Funstar%2E',
-            'category': '%20%20Hi%20there!%20%F0%9F%91%8B',
-            'store': "%F0%9F%9A%80",
-            'star': true,
-          },
-          '%E3%80%8B%20Star%20an%20item%20to%20add%20it%20to%20the%20%22To%20Buy%22%20list%2E%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
-              {
-            'item':
-                '%E3%80%8B%20Star%20an%20item%20to%20add%20it%20to%20the%20%22To%20Buy%22%20list%2E',
-            'category': '%20%20Hi%20there!%20%F0%9F%91%8B',
-            'store': "%F0%9F%9A%80",
-            'star': true,
-          },
-          '%E3%80%8B%20Unstar%20an%20item%20to%20take%20it%20off%20the%20%22To%20Buy%22%20list%2E%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
-              {
-            'item':
-                '%E3%80%8B%20Unstar%20an%20item%20to%20take%20it%20off%20the%20%22To%20Buy%22%20list%2E',
-            'category': '%20%20Hi%20there!%20%F0%9F%91%8B',
-            'store': "%F0%9F%9A%80",
-            'star': true,
-          },
-          '%E3%80%8BSwipe%20to%20delete%20an%20item%20from%20both%20the%20lists%2E%20%20Hi%20there!%20%F0%9F%91%8B%F0%9F%9A%80':
-              {
-            'item':
-                '%E3%80%8BSwipe%20to%20delete%20an%20item%20from%20both%20the%20lists%2E',
-            'category': '%20%20Hi%20there!%20%F0%9F%91%8B',
-            'store': "%F0%9F%9A%80",
-            'star': false,
-          },
           "TomatoesProduceFarmer's%20market": {
             'item': 'Tomatoes',
             'category': 'Produce',

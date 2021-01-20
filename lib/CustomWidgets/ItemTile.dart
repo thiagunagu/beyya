@@ -9,7 +9,8 @@ class ItemTile extends StatelessWidget {
   final String item; //potato, avocado, etc
   final String store; // WalMart, CostCo
   final String category; //Produce, Dairy
-  final bool star; // starred item or unstarred item
+  final bool star;// starred item or unstarred item
+  final Function toggleStar;
 
   ItemTile({
     this.docIdOfListInUse,
@@ -17,11 +18,11 @@ class ItemTile extends StatelessWidget {
     this.store,
     this.category,
     this.star,
+    this.toggleStar
   });
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseService _db = DatabaseService(dbDocId: docIdOfListInUse);
     return Card(
       margin: EdgeInsets.fromLTRB(0, 0.1, 0, 0.1),
       child: ListTile(
@@ -50,6 +51,7 @@ class ItemTile extends StatelessWidget {
             ),
           );
         },
+        onTap: toggleStar,
       ),
     );
   }

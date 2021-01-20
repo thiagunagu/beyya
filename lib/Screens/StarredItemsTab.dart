@@ -115,13 +115,22 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                   Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
                                       'All stores') //display _items from all stores if the storeFilterDropdown is set to "All stores"
-                          ?  GestureDetector(
-                                onDoubleTap: () {
+                          ?  Dismissible(
+                              key: ObjectKey(_items[itemIndex]),
+                              //use the corresponding object as the key for each dismissible widget,
+                              //if the ternary operator returns true, build list of dismissible itemTiles
+                              child: ItemTile(
+                                docIdOfListInUse: data.docIdOfListInUse,
+                                item: _items[itemIndex].item,
+                                store: _items[itemIndex].store,
+                                star: _items[itemIndex].star,
+                                category: _items[itemIndex].category,
+                                toggleStar: () {
                                   String encodedItem = _db.encodeAsFirebaseKey(
                                       text: _items[itemIndex].item);
                                   String encodedCategory =
-                                      _db.encodeAsFirebaseKey(
-                                          text: _items[itemIndex].category);
+                                  _db.encodeAsFirebaseKey(
+                                      text: _items[itemIndex].category);
                                   String encodedStore = _db.encodeAsFirebaseKey(
                                       text: _items[itemIndex].store);
                                   _db.toggleStar(
@@ -144,67 +153,56 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                     ),
                                   ));
                                 },
-                                child: Dismissible(
-                                    key: ObjectKey(_items[itemIndex]),
-                                    //use the corresponding object as the key for each dismissible widget,
-                                    //if the ternary operator returns true, build list of dismissible itemTiles
-                                    child: ItemTile(
-                                      docIdOfListInUse: data.docIdOfListInUse,
-                                      item: _items[itemIndex].item,
-                                      store: _items[itemIndex].store,
-                                      star: _items[itemIndex].star,
-                                      category: _items[itemIndex].category,
+                              ),
+                              background: SwipeRightBackground(),
+                              secondaryBackground: SwipeLeftBackground(),
+                              onDismissed: (direction) async {
+                                try {
+                                  String encodedItem =
+                                      _db.encodeAsFirebaseKey(
+                                          text: _items[itemIndex].item);
+                                  String encodedCategory =
+                                      _db.encodeAsFirebaseKey(
+                                          text:
+                                              _items[itemIndex].category);
+                                  String encodedStore =
+                                      _db.encodeAsFirebaseKey(
+                                          text: _items[itemIndex].store);
+                                  await _db.deleteItem(
+                                      id: encodedItem +
+                                          encodedCategory +
+                                          encodedStore);
+                                  Scaffold.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Deleted "$itemName"'),
+                                    action: SnackBarAction(
+                                      label: 'UNDO',
+                                      textColor: Colors.amber,
+                                      onPressed: () {
+                                        _db.addItem(
+                                          item: _items[itemIndex].item,
+                                          store: _items[itemIndex].store,
+                                          category:
+                                              _items[itemIndex].category,
+                                          star: _items[itemIndex].star,
+                                        );
+                                      },
                                     ),
-                                    background: SwipeRightBackground(),
-                                    secondaryBackground: SwipeLeftBackground(),
-                                    onDismissed: (direction) async {
-                                      try {
-                                        String encodedItem =
-                                            _db.encodeAsFirebaseKey(
-                                                text: _items[itemIndex].item);
-                                        String encodedCategory =
-                                            _db.encodeAsFirebaseKey(
-                                                text:
-                                                    _items[itemIndex].category);
-                                        String encodedStore =
-                                            _db.encodeAsFirebaseKey(
-                                                text: _items[itemIndex].store);
-                                        await _db.deleteItem(
-                                            id: encodedItem +
-                                                encodedCategory +
-                                                encodedStore);
-                                        Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text('Deleted "$itemName"'),
-                                          action: SnackBarAction(
-                                            label: 'UNDO',
-                                            textColor: Colors.amber,
-                                            onPressed: () {
-                                              _db.addItem(
-                                                item: _items[itemIndex].item,
-                                                store: _items[itemIndex].store,
-                                                category:
-                                                    _items[itemIndex].category,
-                                                star: _items[itemIndex].star,
-                                              );
-                                            },
-                                          ),
-                                        ));
-                                      } catch (e, s) {
-                                        await FirebaseCrashlytics.instance
-                                            .log('Item dismissed');
-                                        await FirebaseCrashlytics.instance
-                                            .recordError(e, s,
-                                                reason: 'Item dismissed');
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return ErrorAlert(
-                                                  errorMessage: e.toString());
-                                            });
-                                      }
-                                    }),
-                              )
+                                  ));
+                                } catch (e, s) {
+                                  await FirebaseCrashlytics.instance
+                                      .log('Item dismissed');
+                                  await FirebaseCrashlytics.instance
+                                      .recordError(e, s,
+                                          reason: 'Item dismissed');
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ErrorAlert(
+                                            errorMessage: e.toString());
+                                      });
+                                }
+                              })
                           : SizedBox(); //return an empty box when the ternary operator returns false
                     },
                     itemCount: _items.length,
