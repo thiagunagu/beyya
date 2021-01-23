@@ -1,0 +1,23 @@
+# Automatically generated on 2021-01-23 UTC from https://codemagic.io/app/6003d5b41b08f3c8cddd6bdd/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  default-workflow:
+    name: Default Workflow
+    max_build_duration: 60
+    environment:
+      vars:
+        AppleId: Encrypted(Z0FBQUFBQmdER1BBenJQSnE0VW5iVDcteTJaUnVjX1ZyOFY1YjA2N0RfZUJYaWFUa25GTzVpbUlVSE9hbHloaFEzSnN6V0xGYnRTSHY4QWRDTDBqSkxMUDFyVDhpR2hlQmUweGtoWXRMSE1uWERBM19ldlphdnRKRU5qMFFOQlVWVk42NHV6TnBWaVhyY0NNR3hXdzN5Rk9hRVNNOFlkQml1enk0dUIwbENYVXhwamNIRWJCazB2a09wRVlWd2toeGFxZXY3amJyOWhfS1UxT1R5WWd6Y3dvM1JoTnhQRDNxZnFqY214Zm1QeUs4enFiWkZPY09WRDhUQ24zaVF6X1Uxa25WekkwQ2h4em5mVXd4QXVpek93LXU4N0xxNFpDbXJicE4wVXJCbnlBbEdBY2ZkWnlDTUE9)
+        ApplePwd: Encrypted(Z0FBQUFBQmdER1BBU1VMbFdvenNNMVFxaGVlemVwejNoUTFCMWxUQWtBZllMUlZHWF91c1RCbDZCWExHTk5zd2VtWXlrbUIxbG5Ja0VGM0VRMUpCZFFiRFJJMHJkbUZiUXpESXVHZkMzeElOWUpnNTZUYnMzdHFJcHh5MlgxWl93eE5RN0pNYVV2U3VjeS0tQWViQy1xUkI5dzJneUttWU83dEJ3dDdnbm5ZWWQzN0w2NHBfV3RpNWlqcW5TTDQtN296eHpVNFdhTmhId002b2ZTckR3NWlWOTViby1aVEVPWVZ5YjRIVXRwMmhfcFFoNVlmTkFEejNqQTN2Q0pfU3JiTlp6cndNMUVzSUc2T21NR1JVQTBYMDZ2akNYRWxXN0E9PQ==)
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - cd . && flutter packages pub get
+      - cd . && flutter analyze
+    artifacts:
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - thiagunagu@gmail.com
