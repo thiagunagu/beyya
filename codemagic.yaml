@@ -13,6 +13,19 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
+      - ... your dependencies installation
+          - name: Set up keychain to be used for codesigning using Codemagic CLI 'keychain' command
+          script: keychain initialize
+            - name: Fetch signing files
+              script: |
+                app-store-connect fetch-signing-files "io.codemagic.app" \  # Fetch signing files for specified bundle ID (use "$(xcode-project detect-bundle-id)" if not specified)
+                  --type IOS_APP_DEVELOPMENT \  # Specify provisioning profile type*
+                  --create  # Allow creating resources if existing are not found.
+            - name: Set up signing certificate
+              script: keychain add-certificates
+            - name: Set up code signing settings on Xcode project
+              script: xcode-project use-profiles
+          ... your build commands
       - cd . && flutter packages pub get
       - cd . && flutter analyze
     artifacts:
@@ -21,3 +34,6 @@ workflows:
       email:
         recipients:
           - thiagunagu@gmail.com
+      app_store_connect:                  # For iOS app
+        apple_id: teambeyya@gmail.com        # Email address used for login
+        password: Encrypted(Z0FBQUFBQmdEWnNaazhxSHRrY3Y0N3RURVpGSWo5WXBIcWVmMzQ3UE9xMnNhQWVDNFhKSFdzM3ZWS29BeTl1OC0yWFRaeDZydm9WZ252V1RYM1VEVV9lbTRjeDFDLVM0cGc9PQ==)          # App-specific password
