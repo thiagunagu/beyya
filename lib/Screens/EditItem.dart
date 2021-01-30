@@ -139,7 +139,7 @@ class _EditItemState extends State<EditItem> {
                                     return null;
                                   }
                                 },
-                                decoration: InputDecoration.collapsed())),
+                                decoration: InputDecoration.collapsed(hintText: 'Add Item'))),
                         IconButton(
                           icon: Icon(_star ? Icons.star : Icons.star_border),
                           onPressed: () {

@@ -93,7 +93,7 @@ class _EditStoreState extends State<EditStore> {
                               return null;
                             }
                           },
-                          decoration: InputDecoration.collapsed()),
+                          decoration: InputDecoration.collapsed(hintText: 'Add Store')),
                     ),
                     IconButton(
                         iconSize: 24.0,

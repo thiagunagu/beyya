@@ -94,7 +94,7 @@ class _EditCategoryState extends State<EditCategory> {
                               return null;
                             }
                           },
-                          decoration: InputDecoration.collapsed()),
+                          decoration: InputDecoration.collapsed(hintText: 'Add category')),
                     ),
                     IconButton(
                         iconSize: 24.0,

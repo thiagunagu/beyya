@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:beyya/Screens/EditItem.dart';
 
-import 'package:beyya/Services/DatabaseServices.dart';
-
 class ItemTile extends StatelessWidget {
   final String docIdOfListInUse;
   final String item; //potato, avocado, etc
