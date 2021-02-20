@@ -73,7 +73,7 @@ class _ShowTabsState extends State<ShowTabs> {
                   },
                     decoration: InputDecoration(
                       isDense: true,
-                      contentPadding: EdgeInsets.all(8.0),
+                      contentPadding: EdgeInsets.all(12.0),
                       border: OutlineInputBorder(borderRadius: BorderRadius.all(const Radius.circular(5.0))),
                       filled: true,
                         fillColor: Colors.white,
