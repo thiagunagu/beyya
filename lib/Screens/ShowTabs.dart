@@ -1,3 +1,4 @@
+import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -29,6 +30,7 @@ class ShowTabs extends StatefulWidget {
 
 class _ShowTabsState extends State<ShowTabs> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  bool isSearching = false;
   @override
   Widget build(BuildContext context) {
     bool _numOfItemsLimitReached = false;
@@ -57,11 +59,53 @@ class _ShowTabsState extends State<ShowTabs> {
             )
           ],
         ),
+        title: Container(
+          padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+          alignment: Alignment.centerRight,
+          child:
+            isSearching
+                ? TextField(
+              maxLines: 1,
+                  textAlignVertical: TextAlignVertical.center,
+                  autofocus: true,
+                  onChanged: (newValue){
+                    Provider.of<ItemFilterProvider>(context,listen: false).changeItemFilter(newValue: newValue.toLowerCase());
+                  },
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.all(8.0),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.all(const Radius.circular(5.0))),
+                      filled: true,
+                        fillColor: Colors.white,
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.close),
+                          color: Colors.grey,
+                          onPressed: (){
+                            Provider.of<ItemFilterProvider>(context,listen: false).changeItemFilter(newValue: '');
+                            setState(() {
+                              isSearching=false;
+                            });
+                          },
+                        )),
+                  )
+                : IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        isSearching=true;
+                      });
+                    },
+                  ),
+        ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
                 left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-            child: StoreFilterDropdown(),
+            child: Row(
+              children: [
+                StoreFilterDropdown(),
+              ],
+            ),
           ),
         ],
         bottom: TabBar(tabs: [
@@ -122,7 +166,7 @@ class _ShowTabsState extends State<ShowTabs> {
       key: _drawerKey,
       drawer: Drawer(
         child: ListView(
-          padding:const EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(0.0),
           children: <Widget>[
             DrawerHeader(
               child: Column(
@@ -199,13 +243,14 @@ class _ShowTabsState extends State<ShowTabs> {
             ),
             Consumer<UserDocument>(
               builder: (_, data, __) {
-                if (data is UserData && (Provider.of<InvitationPendingResponse>(context)
-                    .emailOfInviter !=
-                    null &&
-                    (data.inviteesWhoJoined.isNotEmpty ||
-                        data.inviteesYetToRespond.isNotEmpty ||
-                        Provider.of<SignedInUser>(context).userEmail !=
-                            data.ownerOfListInUse))) {
+                if (data is UserData &&
+                    (Provider.of<InvitationPendingResponse>(context)
+                                .emailOfInviter !=
+                            null &&
+                        (data.inviteesWhoJoined.isNotEmpty ||
+                            data.inviteesYetToRespond.isNotEmpty ||
+                            Provider.of<SignedInUser>(context).userEmail !=
+                                data.ownerOfListInUse))) {
                   return ListTile(
                     leading: Icon(Icons.notification_important),
                     title: Text('Alert'),

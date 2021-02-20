@@ -1,3 +1,4 @@
+import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -43,7 +44,7 @@ class CheckList extends StatelessWidget {
               if (item.store ==
                       Provider.of<StoreFilterProvider>(context).storeFilter ||
                   Provider.of<StoreFilterProvider>(context).storeFilter ==
-                      'All stores') {
+                      'All stores'&&item.item.toLowerCase().split(' ').any((word) => word.startsWith(Provider.of<ItemFilterProvider>(context).itemFilter))) {
                 _categoriesInUse.add(item.category);
               }
             });
@@ -101,6 +102,7 @@ class CheckList extends StatelessWidget {
                       return _categoriesInUse[categoryIndex] ==
                                   _items[itemIndex]
                                       .category && //filter for _items just under this category
+                          _items[itemIndex].item.toLowerCase().split(' ').any((word) => word.startsWith(Provider.of<ItemFilterProvider>(context).itemFilter))&&
                               (Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
                                       _items[itemIndex]

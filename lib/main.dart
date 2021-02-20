@@ -33,6 +33,7 @@ import 'package:beyya/Services/DatabaseServices.dart';
 import 'package:beyya/Services/KeyboardHeightProvider.dart';
 
 import 'package:beyya/CustomWidgets/StoreFilterDropdown.dart';
+import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 
 
 //Toggle this to cause an async error to be thrown during initialization
@@ -48,6 +49,7 @@ main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
+  SystemChrome.setEnabledSystemUIOverlays([]);
   runZonedGuarded(() {
     runApp(InitializeFirebase());
   }, (error, stackTrace) {
@@ -212,6 +214,8 @@ class Root extends StatelessWidget {
               ),
               ChangeNotifierProvider(
                   create: (context) => StoreFilterProvider()),
+              ChangeNotifierProvider(
+                  create: (context) => ItemFilterProvider()),
               ChangeNotifierProvider(
                   create: (context) => KeyboardHeightProvider())
             ],

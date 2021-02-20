@@ -9,6 +9,7 @@ import 'package:beyya/CustomWidgets/ItemTile.dart';
 import 'package:beyya/CustomWidgets/StoreFilterDropdown.dart';
 import 'package:beyya/CustomWidgets/SwipeLeftBackground.dart';
 import 'package:beyya/CustomWidgets/SwipeRightBackground.dart';
+import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 
 import 'package:beyya/Models/Item.dart';
 import 'package:beyya/Models/UserDocument.dart';
@@ -50,7 +51,11 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                           Provider.of<StoreFilterProvider>(context)
                               .storeFilter ||
                       Provider.of<StoreFilterProvider>(context).storeFilter ==
-                          'All stores')) {
+                              'All stores' &&
+                          item.item.toLowerCase().split(' ').any((word) =>
+                              word.startsWith(
+                                  Provider.of<ItemFilterProvider>(context)
+                                      .itemFilter)))) {
                 _categoriesInUse.add(item.category);
               }
             });
@@ -106,8 +111,14 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                       return _items[itemIndex].star ==
                                   true && //filter for starred _items
                               _categoriesInUse[categoryIndex] ==
-                                  _items[itemIndex]
-                                      .category && //filter for _items just under this category
+                                  _items[itemIndex].category &&
+                              _items[itemIndex]
+                                  .item
+                                  .toLowerCase()
+                                  .split(' ')
+                                  .any((word) => word.startsWith(Provider.of<
+                                          ItemFilterProvider>(context)
+                                      .itemFilter)) && //filter for _items just under this category
                               (Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
                                       _items[itemIndex]
@@ -115,7 +126,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                   Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
                                       'All stores') //display _items from all stores if the storeFilterDropdown is set to "All stores"
-                          ?  Dismissible(
+                          ? Dismissible(
                               key: ObjectKey(_items[itemIndex]),
                               //use the corresponding object as the key for each dismissible widget,
                               //if the ternary operator returns true, build list of dismissible itemTiles
@@ -129,8 +140,8 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                   String encodedItem = _db.encodeAsFirebaseKey(
                                       text: _items[itemIndex].item);
                                   String encodedCategory =
-                                  _db.encodeAsFirebaseKey(
-                                      text: _items[itemIndex].category);
+                                      _db.encodeAsFirebaseKey(
+                                          text: _items[itemIndex].category);
                                   String encodedStore = _db.encodeAsFirebaseKey(
                                       text: _items[itemIndex].store);
                                   _db.toggleStar(
@@ -158,22 +169,18 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                               secondaryBackground: SwipeLeftBackground(),
                               onDismissed: (direction) async {
                                 try {
-                                  String encodedItem =
-                                      _db.encodeAsFirebaseKey(
-                                          text: _items[itemIndex].item);
+                                  String encodedItem = _db.encodeAsFirebaseKey(
+                                      text: _items[itemIndex].item);
                                   String encodedCategory =
                                       _db.encodeAsFirebaseKey(
-                                          text:
-                                              _items[itemIndex].category);
-                                  String encodedStore =
-                                      _db.encodeAsFirebaseKey(
-                                          text: _items[itemIndex].store);
+                                          text: _items[itemIndex].category);
+                                  String encodedStore = _db.encodeAsFirebaseKey(
+                                      text: _items[itemIndex].store);
                                   await _db.deleteItem(
                                       id: encodedItem +
                                           encodedCategory +
                                           encodedStore);
-                                  Scaffold.of(context)
-                                      .showSnackBar(SnackBar(
+                                  Scaffold.of(context).showSnackBar(SnackBar(
                                     content: Text('Deleted "$itemName"'),
                                     action: SnackBarAction(
                                       label: 'UNDO',
@@ -182,8 +189,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                         _db.addItem(
                                           item: _items[itemIndex].item,
                                           store: _items[itemIndex].store,
-                                          category:
-                                              _items[itemIndex].category,
+                                          category: _items[itemIndex].category,
                                           star: _items[itemIndex].star,
                                         );
                                       },
