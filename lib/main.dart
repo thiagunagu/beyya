@@ -49,7 +49,7 @@ main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  //SystemChrome.setEnabledSystemUIOverlays([]);
   runZonedGuarded(() {
     runApp(InitializeFirebase());
   }, (error, stackTrace) {
