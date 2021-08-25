@@ -222,7 +222,8 @@ class InviteeList extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16),
-                  child: Text(
+                  child:  Text(
+                ownerOfListInUse=='anonymousUser'?'You have to create an account to share your list with someone. Tap to create an account.':
                     'Tap to invite someone to share your list.',
                     style: TextStyle(
                         color: Colors.grey[400], fontSize: 18.0),
@@ -233,7 +234,7 @@ class InviteeList extends StatelessWidget {
           ),
         ),
         onTap: () {
-          showModalBottomSheet(
+          ownerOfListInUse=='anonymousUser'?Navigator.popAndPushNamed(context, '/Register'):showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             builder: (context) => SingleChildScrollView(child: SendInvite()),

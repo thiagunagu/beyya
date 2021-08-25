@@ -34,9 +34,11 @@ class _ShowTabsState extends State<ShowTabs> {
   @override
   Widget build(BuildContext context) {
     bool _numOfItemsLimitReached = false;
-    var userEmail = Provider.of<SignedInUser>(context).userEmail;
+    var userEmail = Provider.of<SignedInUser>(context, listen: true).userEmail;
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         leading: Stack(
           children: [
             IconButton(
@@ -62,40 +64,44 @@ class _ShowTabsState extends State<ShowTabs> {
         title: Container(
           padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
           alignment: Alignment.centerRight,
-          child:
-            isSearching
-                ? TextField(
-              maxLines: 1,
+          child: isSearching
+              ? TextField(
+                  maxLines: 1,
                   textAlignVertical: TextAlignVertical.center,
                   autofocus: true,
-                  onChanged: (newValue){
-                    Provider.of<ItemFilterProvider>(context,listen: false).changeItemFilter(newValue: newValue.toLowerCase());
+                  onChanged: (newValue) {
+                    Provider.of<ItemFilterProvider>(context, listen: false)
+                        .changeItemFilter(newValue: newValue.toLowerCase());
                   },
-                    decoration: InputDecoration(
+                  decoration: InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.all(12.0),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.all(const Radius.circular(5.0))),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(const Radius.circular(5.0))),
                       filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.close),
-                          color: Colors.grey,
-                          onPressed: (){
-                            Provider.of<ItemFilterProvider>(context,listen: false).changeItemFilter(newValue: '');
-                            setState(() {
-                              isSearching=false;
-                            });
-                          },
-                        )),
-                  )
-                : IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        isSearching=true;
-                      });
-                    },
-                  ),
+                      fillColor: Colors.white,
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.close),
+                        color: Colors.grey,
+                        onPressed: () {
+                          Provider.of<ItemFilterProvider>(context,
+                                  listen: false)
+                              .changeItemFilter(newValue: '');
+                          setState(() {
+                            isSearching = false;
+                          });
+                        },
+                      )),
+                )
+              : IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      isSearching = true;
+                    });
+                  },
+                ),
         ),
         actions: <Widget>[
           Padding(
@@ -168,40 +174,50 @@ class _ShowTabsState extends State<ShowTabs> {
         child: ListView(
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
-            DrawerHeader(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: CircleAvatar(
-                      child: Text(
-                        userEmail[0].toUpperCase(),
-                        style: GoogleFonts.baumans(
-                            textStyle: TextStyle(
-                                color: Colors.red[500],
-                                fontSize: 45.0,
-                                fontWeight: FontWeight.w400)),
+            userEmail == 'anonymousUser'
+                ? Container(
+                    height: MediaQuery.of(context).padding.top*2,
+                    child: DrawerHeader(
+                      child: Container(),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
                       ),
-                      foregroundColor: Colors.red,
-                      backgroundColor: Colors.white,
-                      maxRadius: 35,
+                    ),
+                  )
+                : DrawerHeader(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: CircleAvatar(
+                            child: Text(
+                              userEmail[0].toUpperCase(),
+                              style: GoogleFonts.baumans(
+                                  textStyle: TextStyle(
+                                      color: Colors.red[500],
+                                      fontSize: 45.0,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                            foregroundColor: Colors.red,
+                            backgroundColor: Colors.white,
+                            maxRadius: 35,
+                          ),
+                        ),
+                        Text(
+                          userEmail,
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  Text(
-                    userEmail,
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
             ListTile(
                 leading: Icon(Icons.category),
                 title: Text('Categories'),
@@ -241,6 +257,15 @@ class _ShowTabsState extends State<ShowTabs> {
                 Navigator.pushNamed(context, '/Share');
               },
             ),
+            userEmail == 'anonymousUser'
+                ? ListTile(
+                    leading: Icon(Icons.app_registration),
+                    title: Text('Login/Register'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(context, '/Register');
+                    })
+                : SizedBox(),
             Consumer<UserDocument>(
               builder: (_, data, __) {
                 if (data is UserData &&
@@ -265,43 +290,47 @@ class _ShowTabsState extends State<ShowTabs> {
                 }
               },
             ),
-            ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.pushNamed(context, '/Settings');
-                }),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Sign out'),
-              onTap: () async {
-                try {
-                  await showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) {
-                        Future.delayed(Duration(seconds: 3), () {
-                          Navigator.of(context).pop(true);
-                        });
-                        return StatusAlert(
-                          statusMessage: 'Signing out..',
-                        );
-                      });
-                  await AuthService().signOut();
-                } catch (e, s) {
-                  await FirebaseCrashlytics.instance
-                      .log('Sign out button pressed');
-                  await FirebaseCrashlytics.instance
-                      .recordError(e, s, reason: 'Sign out button pressed');
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ErrorAlert(errorMessage: e.toString());
-                      });
-                } //signs out
-              },
-            )
+            userEmail == 'anonymousUser'
+                ? SizedBox()
+                : ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text('Settings'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(context, '/Settings');
+                    }),
+            userEmail == 'anonymousUser'
+                ? SizedBox()
+                : ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Sign out'),
+                    onTap: () async {
+                      try {
+                        await showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              Future.delayed(Duration(seconds: 2), () {
+                                Navigator.of(context).pop(true);
+                              });
+                              return StatusAlert(
+                                statusMessage: 'Signing out..',
+                              );
+                            });
+                        await AuthService().signOut();
+                      } catch (e, s) {
+                        await FirebaseCrashlytics.instance
+                            .log('Sign out button pressed');
+                        await FirebaseCrashlytics.instance.recordError(e, s,
+                            reason: 'Sign out button pressed');
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ErrorAlert(errorMessage: e.toString());
+                            });
+                      } //signs out
+                    },
+                  )
           ],
         ),
       ),

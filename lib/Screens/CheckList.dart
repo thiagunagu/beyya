@@ -135,6 +135,7 @@ class CheckList extends StatelessWidget {
                             background: SwipeRightBackground(),
                             secondaryBackground: SwipeLeftBackground(),
                             onDismissed: (direction) async {
+                              ScaffoldMessenger.of(context).removeCurrentSnackBar();
                               String itemName=_items[itemIndex].item;
                               try {
                                 String encodedItem =
@@ -150,7 +151,7 @@ class CheckList extends StatelessWidget {
                                     id: encodedItem +
                                         encodedCategory +
                                         encodedStore);
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text('Deleted "$itemName"'),
                                   action: SnackBarAction(
                                     label: 'UNDO',

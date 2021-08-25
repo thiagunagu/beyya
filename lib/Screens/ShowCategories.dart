@@ -21,7 +21,9 @@ class ShowCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     bool _numOfCategoriesLimitReached = false;
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Categories'),
@@ -104,7 +106,7 @@ class ShowCategories extends StatelessWidget {
                                         dbDocId: data.docIdOfListInUse)
                                     .deleteCategory(
                                         category: _categories[categoryIndex]);
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                         '$_category has been deleted. Items tied to this category have been moved to \"Misc\"')));
                               }
@@ -128,7 +130,7 @@ class ShowCategories extends StatelessWidget {
                             //build a non-dismissible tile for "Other" category
                             title: Text(_categories[categoryIndex]),
                             onTap: () {
-                              Scaffold.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text(
                                       "'Misc' can't be modified or deleted")));
                             },

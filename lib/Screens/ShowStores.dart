@@ -23,7 +23,9 @@ class ShowStores extends StatelessWidget {
   Widget build(BuildContext context) {
     bool _numOfStoresLimitReached = false;
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Stores'),
@@ -103,7 +105,7 @@ class ShowStores extends StatelessWidget {
                                 await DatabaseService(
                                         dbDocId: data.docIdOfListInUse)
                                     .deleteStore(store: _stores[storeIndex]);
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                         '$_store has been deleted. Items tied to this store have been moved to \"Other\"')));
                               }
@@ -127,7 +129,7 @@ class ShowStores extends StatelessWidget {
                             //build a non-dismissible tile for "Other" store
                             title: Text(_stores[storeIndex]),
                             onTap: () {
-                              Scaffold.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text(
                                       "'Other' can't be modified or deleted")));
                             },

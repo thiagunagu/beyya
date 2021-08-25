@@ -20,12 +20,22 @@ class Alert extends StatefulWidget {
 class _AlertState extends State<Alert> {
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle styleYellow = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.yellow[900],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.yellow[900])));
+
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Alert'),
         ),
+
       ),
       body: SafeArea(
         child: Consumer<UserDocument>(
@@ -37,13 +47,16 @@ class _AlertState extends State<Alert> {
               FirebaseCrashlytics.instance
                   .log('Error loading data for Alert route: $err');
               return Center(
-                child: Text('Oops! Something went wrong. Please restart the app and try again.'),
+                child: Text(
+                    'Oops! Something went wrong. Please restart the app and try again.'),
               );
             } else if (data is UserData) {
               String secondInviter =
-                  Provider.of<InvitationPendingResponse>(context).emailOfInviter;
+                  Provider.of<InvitationPendingResponse>(context)
+                      .emailOfInviter;
               String secondInviterDocId =
-                  Provider.of<InvitationPendingResponse>(context).docIdOfInviter;
+                  Provider.of<InvitationPendingResponse>(context)
+                      .docIdOfInviter;
               String firstInviter = data.ownerOfListInUse;
               String invitee = Provider.of<SignedInUser>(context).userEmail;
               final _inviterDb = DatabaseService(
@@ -72,14 +85,9 @@ class _AlertState extends State<Alert> {
                           children: [
                             Container(
                               padding: EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.yellow[900])),
-                                textColor: Colors.white,
-                                color: Colors.yellow[900],
+                              child: ElevatedButton(
+                                style: styleYellow,
                                 child: Text('Decide later'),
-                                elevation: 4.0,
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -87,14 +95,15 @@ class _AlertState extends State<Alert> {
                             ),
                             Container(
                               padding: EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.red)),
-                                textColor: Colors.white,
-                                color: Colors.red[500],
+                              child: ElevatedButton(
+                                //shape: RoundedRectangleBorder(
+                                //borderRadius: BorderRadius.circular(18.0),
+                                //side: BorderSide(color: Colors.red)),
+                                //textColor: Colors.white,
+                                //color: Colors.red[500],
                                 child: Text('Decline'),
-                                elevation: 4.0,
+                                style: styleYellow,
+                                //elevation: 4.0,
                                 onPressed: () async {
                                   try {
                                     Navigator.pop(context);

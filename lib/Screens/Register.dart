@@ -1,13 +1,13 @@
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:google_fonts/google_fonts.dart';
-
 import 'package:beyya/CustomWidgets/ErrorAlert.dart';
-import 'package:beyya/CustomWidgets/StatusAlert.dart';
 
 import 'package:beyya/Services/AuthService.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -42,9 +42,18 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
         title: Text('Sign up'),
+
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -56,17 +65,17 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Beyya',
-                        style: GoogleFonts.baumans(
-                            textStyle: TextStyle(
-                                color: Colors.red[400],
-                                fontSize: 40.0,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Text(
+                    //     'Beyya',
+                    //     style: GoogleFonts.baumans(
+                    //         textStyle: TextStyle(
+                    //             color: Colors.red[400],
+                    //             fontSize: 40.0,
+                    //             fontWeight: FontWeight.w400)),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -140,14 +149,10 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                     ),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red[500])),
-                      textColor: Colors.white,
-                      color: Colors.red[500],
+                    ElevatedButton(
+                      style: styleRed,
                       child: Text(
-                        "Sign up",
+                        "Sign me up",
                       ),
                       onPressed: () async {
                         String loginEmailId = loginEmail.text.trim();
@@ -173,34 +178,66 @@ class _RegisterState extends State<Register> {
                                               MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            FlatButton(
+                                            TextButton(
                                               child: Text('Yes'),
                                               onPressed: () async {
                                                 try {
-                                                  await showDialog(
-                                                      barrierDismissible: false,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        Future.delayed(
-                                                            Duration(
-                                                                seconds: 3),
-                                                            () {
-                                                          Navigator.of(context)
-                                                              .pop(true);
-                                                        });
-                                                        return StatusAlert(
-                                                          statusMessage:
-                                                              'Creating your account...',
-                                                        );
-                                                      });
-                                                  await _auth
-                                                      .registerAccountWithEmail(
-                                                          email: loginEmail.text
-                                                              .trim(),
-                                                          password: password
-                                                              .text
-                                                              .trim());
+                                                  // await showDialog(
+                                                  //     barrierDismissible: false,
+                                                  //     context: context,
+                                                  //     builder: (context) {
+                                                  //       Future.delayed(
+                                                  //           Duration(
+                                                  //               seconds: 2),
+                                                  //           () {
+                                                  //         Navigator.of(context)
+                                                  //             .pop(true);
+                                                  //       });
+                                                  //       return StatusAlert(
+                                                  //         statusMessage:
+                                                  //             'Creating your account...',
+                                                  //       );
+                                                  //     });
+                                                  Flushbar(
+                                                    flushbarPosition: FlushbarPosition.TOP,
+                                                    message:
+                                                    'Creating your account...',
+                                                    duration: Duration(seconds: 2),
+                                                    margin: EdgeInsets.all(8),
+                                                    borderRadius: 10,
+                                                  )..show(context);
+                                                  if (Provider.of<UserTypeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .convertedUser ==
+                                                      true) {
+                                                    await _auth
+                                                        .registerAccountWithEmail(
+                                                            email: loginEmail
+                                                                .text
+                                                                .trim(),
+                                                            password: password
+                                                                .text
+                                                                .trim());
+                                                  } else {
+                                                    Provider.of<UserTypeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .setConvertedUserToTrue();
+                                                    await _auth
+                                                        .convertAnonymousUser(
+                                                            email: loginEmail
+                                                                .text
+                                                                .trim(),
+                                                            password: password
+                                                                .text
+                                                                .trim());
+                                                  }
                                                 } catch (e, s) {
+                                                  Provider.of<UserTypeProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .setConvertedUserToFalse();
                                                   String _errorMessage;
                                                   await FirebaseCrashlytics
                                                       .instance
@@ -254,7 +291,7 @@ class _RegisterState extends State<Register> {
                                                 }
                                               },
                                             ),
-                                            FlatButton(
+                                            TextButton(
                                               child: Text('No'),
                                               onPressed: () {
                                                 Navigator.pop(context);
@@ -270,15 +307,36 @@ class _RegisterState extends State<Register> {
                         }
                       },
                     ),
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         "Already have an account? Log in!",
                       ),
                       onPressed: () {
                         //navigate to login screen
-                        Navigator.pushNamed(context, '/Login');
+                        Navigator.popAndPushNamed(context, '/Login');
+                        //Navigator.pop(context);
                       },
-                    )
+                    ),
+                    Provider.of<UserTypeProvider>(context, listen: false)
+                                .convertedUser ==
+                            true
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('or'),
+                              TextButton(
+                                child: Text(
+                                  "Continue as guest",
+                                ),
+                                onPressed: () {
+                                  Provider.of<UserTypeProvider>(context,
+                                          listen: false)
+                                      .setConvertedUserToNull();
+                                },
+                              ),
+                            ],
+                          )
+                        : SizedBox()
                   ],
                 ),
               ),

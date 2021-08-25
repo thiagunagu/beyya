@@ -1,3 +1,5 @@
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -5,9 +7,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:beyya/Services/AuthService.dart';
 
 import 'package:beyya/CustomWidgets/ErrorAlert.dart';
-import 'package:beyya/CustomWidgets/StatusAlert.dart';
 
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -30,8 +31,17 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Text('Login'),
       ),
       body: SafeArea(
@@ -44,13 +54,13 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Beyya',
-                      style: GoogleFonts.baumans(textStyle: TextStyle(color: Colors.red[400],fontSize: 40.0,fontWeight: FontWeight.w400)),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Text(
+                  //     'Beyya',
+                  //     style: GoogleFonts.baumans(textStyle: TextStyle(color: Colors.red[400],fontSize: 40.0,fontWeight: FontWeight.w400)),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
@@ -90,30 +100,39 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                   ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red[500])),
-                    textColor: Colors.white,
-                    color: Colors.red[500],
+                  ElevatedButton(
+                    style: styleRed,
                     onPressed: () async {
                       try {
                         if (_loginFormKey.currentState.validate()) {
-                          await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                Future.delayed(Duration(seconds: 3), () {
-                                  Navigator.of(context).pop(true);
-                                });
-                                return StatusAlert(
-                                  statusMessage: 'Logging in...',
-                                );
-                              });
-                            await _auth.signInWithEmail(
-                                email: loginEmail.text.trim(),
-                                password: password.text.trim());
-
+                          // await showDialog(
+                          //     barrierDismissible: false,
+                          //     context: context,
+                          //     builder: (context) {
+                          //       Future.delayed(Duration(seconds: 2), () {
+                          //         Navigator.of(context).pop(true);
+                          //       });
+                          //       return StatusAlert(
+                          //         statusMessage: 'Logging in...',
+                          //       );
+                          //     });
+                          Flushbar(
+                            flushbarPosition: FlushbarPosition.TOP,
+                            message:
+                            'Logging in..',
+                            duration: Duration(seconds: 2),
+                            margin: EdgeInsets.all(8),
+                            borderRadius: 10,
+                          )..show(context);
+                          await _auth.signInWithEmail(
+                              email: loginEmail.text.trim(),
+                              password: password.text.trim());
+                          Provider.of<UserTypeProvider>(context, listen: false)
+                              .setConvertedUserToTrue();
+                          _auth.signOut();
+                          await _auth.signInWithEmail(
+                              email: loginEmail.text.trim(),
+                              password: password.text.trim());
                         }
                       } catch (e, s) {
                         String _errorMessage;
@@ -125,26 +144,27 @@ class _LoginState extends State<Login> {
                           case "ERROR_WRONG_PASSWORD":
                           case "wrong-password":
                             _errorMessage =
-                            "Incorrect password.\nPlease try again or reset your password.";
+                                "Incorrect password.\nPlease try again or reset your password.";
                             break;
                           case "ERROR_USER_NOT_FOUND":
                           case "user-not-found":
                             _errorMessage =
-                            "Hmmm.. That account doesn\'t exist. Please try again or sign up for a new account.";
+                                "Hmmm.. That account doesn\'t exist. Please try again or sign up for a new account.";
                             break;
                           case "ERROR_USER_DISABLED":
                           case "user-disabled":
                             _errorMessage =
-                            "Your account has been disabled. Please register with different email or write to us at teambeyya@gmail.com.";
+                                "Your account has been disabled. Please register with different email or write to us at teambeyya@gmail.com.";
                             break;
                           case "ERROR_TOO_MANY_REQUESTS":
                           case "operation-not-allowed":
                             _errorMessage =
-                            "You tried too many times. Please try again after few hours or write to us at teambeyya@gmail.com.";
+                                "You tried too many times. Please try again after few hours or write to us at teambeyya@gmail.com.";
                             break;
                           case "ERROR_OPERATION_NOT_ALLOWED":
                           case "operation-not-allowed":
-                            _errorMessage = "Server error, please try again later or write to us at teambeyya@gmail.com..";
+                            _errorMessage =
+                                "Server error, please try again later or write to us at teambeyya@gmail.com..";
                             break;
                           case "ERROR_INVALID_EMAIL":
                           case "invalid-email":
@@ -153,7 +173,7 @@ class _LoginState extends State<Login> {
                           case "ERROR_USER_NOT_FOUND":
                           case "user-not-found":
                             _errorMessage =
-                            "Hmmm.. That account doesn\'t exist. Please try again or sign up for a new account.";
+                                "Hmmm.. That account doesn\'t exist. Please try again or sign up for a new account.";
                             break;
                           default:
                             _errorMessage = e.toString();
@@ -174,18 +194,18 @@ class _LoginState extends State<Login> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.popAndPushNamed(context, '/Register');
                         },
                         child: Text(
                           "New User? Sign up!",
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         child: Text('Forgot password?'),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/ForgotPassword');
+                          Navigator.popAndPushNamed(context, '/ForgotPassword');
                         },
                       ),
                     ],

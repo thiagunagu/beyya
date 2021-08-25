@@ -9,7 +9,7 @@ class Startup extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Register(),
-      theme: ThemeData(
+      theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
         primaryColor: Colors.red[500],
         accentColor: Colors.red[500],
       ),

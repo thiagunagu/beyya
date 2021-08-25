@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -137,6 +138,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                 star: _items[itemIndex].star,
                                 category: _items[itemIndex].category,
                                 toggleStar: () {
+                                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
                                   String encodedItem = _db.encodeAsFirebaseKey(
                                       text: _items[itemIndex].item);
                                   String encodedCategory =
@@ -149,7 +151,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                       id: encodedItem +
                                           encodedCategory +
                                           encodedStore);
-                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text('Unstarred "$itemName"'),
                                     action: SnackBarAction(
                                       label: 'UNDO',
@@ -168,6 +170,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                               background: SwipeRightBackground(),
                               secondaryBackground: SwipeLeftBackground(),
                               onDismissed: (direction) async {
+                                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                                 try {
                                   String encodedItem = _db.encodeAsFirebaseKey(
                                       text: _items[itemIndex].item);
@@ -180,7 +183,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                       id: encodedItem +
                                           encodedCategory +
                                           encodedStore);
-                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text('Deleted "$itemName"'),
                                     action: SnackBarAction(
                                       label: 'UNDO',

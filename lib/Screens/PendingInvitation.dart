@@ -24,6 +24,20 @@ class PendingInvitation extends StatelessWidget {
   Widget build(BuildContext context) {
     final _inviteeDb = DatabaseService(dbOwner: invitee, dbDocId: inviteeDocId);
     final _inviterDb = DatabaseService(dbOwner: inviter, dbDocId: inviterDocId);
+    final ButtonStyle styleGreen = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.green[400],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.green[400])));
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
     return Center(
       child: SingleChildScrollView(
         child: Container(
@@ -43,14 +57,9 @@ class PendingInvitation extends StatelessWidget {
                 children: [
                   Container(
                     padding: EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.green[400])),
-                      textColor: Colors.white,
-                      color: Colors.green[400],
+                    child: ElevatedButton(
+                      style: styleGreen,
                       child: Text('Join'),
-                      elevation: 4.0,
                       onPressed: () async {
                         try {
                           await _inviterDb.addToInviteesWhoJoined(
@@ -75,14 +84,9 @@ class PendingInvitation extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)),
-                      textColor: Colors.white,
-                      color: Colors.red[500],
+                    child: ElevatedButton(
+                      style: styleRed,
                       child: Text('Decline'),
-                      elevation: 4.0,
                       onPressed: () async {
                         try{
                         Navigator.pop(context);

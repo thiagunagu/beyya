@@ -10,6 +10,11 @@ class ErrorAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Theme.of(context).accentColor,
+        shape: StadiumBorder());
     return AlertDialog(
       title: Center(child: Text('Oops!')),
       content: Padding(
@@ -17,9 +22,8 @@ class ErrorAlert extends StatelessWidget {
         child: Text(errorMessage),
       ),
       actions: [
-        RaisedButton(
-          shape: StadiumBorder(),
-          color: Theme.of(context).accentColor,
+        ElevatedButton(
+          style: style,
           child: Text('Ok'),
           onPressed: () {
             Navigator.of(context).pop();

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,6 @@ import 'package:beyya/Screens/ErrorScreen.dart';
 import 'package:beyya/Screens/ForgotPassword.dart';
 import 'package:beyya/Screens/Share.dart';
 import 'package:beyya/Screens/Loading.dart';
-import 'package:beyya/Screens/Startup.dart';
 import 'package:beyya/Screens/ShowCategories.dart';
 import 'package:beyya/Screens/ShowStores.dart';
 import 'package:beyya/Screens/ShowTabs.dart';
@@ -34,6 +34,11 @@ import 'package:beyya/Services/KeyboardHeightProvider.dart';
 
 import 'package:beyya/CustomWidgets/StoreFilterDropdown.dart';
 import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
+
+import 'Screens/Login.dart';
+import 'Screens/Register.dart';
+
+
 
 
 //Toggle this to cause an async error to be thrown during initialization
@@ -49,11 +54,11 @@ main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  //SystemChrome.setEnabledSystemUIOverlays([]);
+  // SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   runZonedGuarded(() {
     runApp(InitializeFirebase());
   }, (error, stackTrace) {
-    print('runZonedGuarded :Caught error in my root zone');
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
 }
@@ -68,8 +73,7 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
 
   Future<void> _testAsyncErrorOnInit() async {
     Future<void>.delayed(const Duration(seconds: 2), () {
-      final List<int> list = <int>[];
-      print(list[100]);
+
     });
   }
 
@@ -116,7 +120,8 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
                 errorMessage: snapshot.error.toString(),
               );
             } else {
-              return Beyya();
+              //return Beyya();
+              return UserType();
             }
             break;
           default:
@@ -127,8 +132,22 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
   }
 }
 
+
+
+class UserType extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context)=>UserTypeProvider(),
+      child: Beyya(),
+    );
+  }
+}
+
+
 //Root widget; rebuilds when the auth state changes (signing in, signing out).
 class Beyya extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -141,8 +160,30 @@ class Beyya extends StatelessWidget {
               return Loading();
               break;
             case ConnectionState.active:
-              if (snapshot.data == null) {
-                return Startup(); //show register screen if the user is not signed in
+              if (snapshot.data == null && Provider.of<UserTypeProvider>(context).convertedUser==null)  {
+                AuthService().signInAnon();
+                Provider.of<UserTypeProvider>(context,listen: false).setConvertedUserToFalse();
+                return Loading();
+              }
+              else if (snapshot.data == null && Provider.of<UserTypeProvider>(context).convertedUser==false)  {
+                return Loading();
+              }
+              else if (snapshot.data == null && Provider.of<UserTypeProvider>(context).convertedUser==true ){
+                return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
+                        primaryColor: Colors.red[500],
+                        accentColor: Colors.red[500],
+                        buttonBarTheme: ButtonBarThemeData(
+                          alignment: MainAxisAlignment.center,
+                        )),
+                  initialRoute: '/',
+                  routes: {
+                    '/': (context) => Login(),
+                    '/ForgotPassword': (context) => ForgotPassword(),
+                    '/Login': (context) => Login(),
+                    '/Register': (context) => Register(),
+                  },);
               }
               else if (snapshot.hasError){
                 return ErrorScreen(errorMessage: snapshot.error.toString(),);
@@ -165,15 +206,15 @@ class Wrapper extends StatelessWidget {
     return MultiProvider(providers: [
       StreamProvider<ListInUse>.value(
           value: DatabaseService(
-                  dbOwner: Provider.of<SignedInUser>(context).userEmail,
-                  dbDocId: Provider.of<SignedInUser>(context).uid)
+                  dbOwner: Provider.of<SignedInUser>(context,listen: true).userEmail,
+                  dbDocId: Provider.of<SignedInUser>(context,listen: true).uid)
               .idOfListInUse,
           initialData: const LoadingListInUse(),
           catchError: (_, err) => ErrorFetchingListInUSe(err: err.toString())),
       StreamProvider<InvitationPendingResponse>.value(
         value: DatabaseService(
-                dbOwner: Provider.of<SignedInUser>(context).userEmail,
-                dbDocId: Provider.of<SignedInUser>(context).uid)
+                dbOwner: Provider.of<SignedInUser>(context,listen: true).userEmail,
+                dbDocId: Provider.of<SignedInUser>(context,listen: true).uid)
             .invitationPendingResponse,
         initialData: InvitationPendingResponse(),
         catchError: (_, err) => InvitationPendingResponse(),
@@ -221,7 +262,7 @@ class Root extends StatelessWidget {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(
+              theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
                   primaryColor: Colors.red[500],
                   accentColor: Colors.red[500],
                   buttonBarTheme: ButtonBarThemeData(
@@ -231,13 +272,15 @@ class Root extends StatelessWidget {
               routes: {
                 '/': (context) =>
                     DefaultTabController(child: ShowTabs(), length: 2),
+                '/Login': (context) => Login(),
+                '/ForgotPassword': (context) => ForgotPassword(),
+                '/Register': (context) => Register(),
                 '/Alert': (context) => Alert(),
                 '/Share': (context) => Share(),
                 '/ShowCategories': (context) => ShowCategories(),
                 '/ShowStores': (context) => ShowStores(),
                 '/Settings': (context) => Settings(),
                 '/ChangePassword': (context) => ChangePassword(),
-                '/ForgotPassword': (context) => ForgotPassword(),
                 '/DeleteAccount': (context) => DeleteAccount(),
               },
             ),

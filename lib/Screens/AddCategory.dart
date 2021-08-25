@@ -15,6 +15,7 @@ import 'package:beyya/Services/DatabaseServices.dart';
 
 class AddCategory extends StatefulWidget {
   @override
+  @override
   _AddCategoryState createState() => _AddCategoryState();
 }
 

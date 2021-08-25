@@ -26,7 +26,9 @@ class _ShareState extends State<Share> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Share'),
@@ -117,7 +119,7 @@ class _ShareState extends State<Share> {
         builder: (_, data, __) {
           if (data is UserData &&
               Provider.of<SignedInUser>(context).userEmail ==
-                  data.ownerOfListInUse &&
+                  data.ownerOfListInUse && data.ownerOfListInUse!='anonymousUser'&&
               data.removedByInviter == null &&
               (data.inviteesYetToRespond.isNotEmpty ||
                   data.inviteesWhoJoined.isNotEmpty ||

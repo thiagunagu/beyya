@@ -23,8 +23,19 @@ class DeleteAccount extends StatelessWidget {
         Provider.of<SignedInUser>(context, listen: false).userEmail;
     final String _userDocId =
         Provider.of<SignedInUser>(context, listen: false).uid;
+
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
+
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Delete account'),
@@ -48,12 +59,8 @@ class DeleteAccount extends StatelessWidget {
                   ),
                 ),
                 Consumer<UserDocument>(builder: (_, data, __) {
-                  return RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red[500])),
-                    textColor: Colors.white,
-                    color: Colors.red[500],
+                  return ElevatedButton(
+                    style: styleRed,
                     onPressed: () async {
                       try {
                         if (data is UserData &&

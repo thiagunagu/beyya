@@ -13,6 +13,9 @@ class DatabaseService {
   static CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('beyya');
 
+  // static CollectionReference collectionReference =
+  // FirebaseFirestore.instance.collection('beyyaTest');
+
   //create a firestore doc with example data when the user creates an account
   Future createUserDocumentWhileSigningUp() async {
     return await collectionReference.doc(dbDocId).set(
@@ -79,6 +82,12 @@ class DatabaseService {
         },
       },
     );
+  }
+//add userEmail while converting from anonymous to authenticated user
+  Future addUserEmail({String email}) async {
+    await collectionReference
+        .doc(dbDocId)
+        .update({'owner': email, 'ownerOfListInUse':email});
   }
 
   //get stream of document snapshots and map it to "UserDocument" objects

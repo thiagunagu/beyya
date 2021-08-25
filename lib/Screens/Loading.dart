@@ -6,7 +6,8 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
         primaryColor: Colors.red[500],
         accentColor: Colors.red[500],
       ),

@@ -22,8 +22,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Text('Reset Password'),
       ),
       body: SafeArea(
@@ -52,15 +61,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       },
                     ),
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text(
                       "Reset password",
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red[500])),
-                    textColor: Colors.white,
-                    color: Colors.red[500],
+                   style: styleRed,
                     onPressed: () async {
                       try {
                         if (_forgotPasswordFormKey.currentState.validate()) {

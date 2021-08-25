@@ -24,6 +24,13 @@ class SharingStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     final _inviteeDb = DatabaseService(dbOwner: invitee, dbDocId: inviteeDocId);
     final _inviterDb = DatabaseService(dbOwner: inviter, dbDocId: inviterDocId);
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
     return Center(
       child: SingleChildScrollView(
         child: Container(
@@ -37,13 +44,9 @@ class SharingStatus extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.all(8.0),
-                child: RaisedButton(
+                child: ElevatedButton(
                   //Leave the shared list
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.red[500])),
-                  textColor: Colors.white,
-                  color: Colors.red[500],
+                  style: styleRed,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

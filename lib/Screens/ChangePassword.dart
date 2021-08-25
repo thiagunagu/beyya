@@ -46,8 +46,18 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
+
+    final ButtonStyle styleRed = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+            side: BorderSide(color: Colors.red)));
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+  brightness: Brightness.dark,
+
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Change password'),
@@ -141,12 +151,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                   ),
                   Container(height: 4.0,),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red[500])),
-                    textColor: Colors.white,
-                    color: Colors.red[500],
+                  ElevatedButton(
+                    style: styleRed,
                     onPressed: () async {
                       if (_changePasswordFormKey.currentState.validate()) {
                         try {
