@@ -10,7 +10,7 @@ class DatabaseService {
   final String dbDocId;
   DatabaseService({this.dbOwner, this.dbDocId});
 
-  static CollectionReference collectionReference =
+  static CollectionReference<Map<String, dynamic>> collectionReference =
       FirebaseFirestore.instance.collection('beyya');
 
   // static CollectionReference collectionReference =
@@ -98,7 +98,7 @@ class DatabaseService {
         .map(_userDocumentFromSnapshot);
   }
 
-  UserDocument _userDocumentFromSnapshot(DocumentSnapshot snapshot) {
+  UserDocument _userDocumentFromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return UserData(
         docId: snapshot.data()['docId'],
         owner: snapshot.data()['owner'],
@@ -138,7 +138,7 @@ class DatabaseService {
         .map(_invitationPendingResponse);
   }
 
-  InvitationPendingResponse _invitationPendingResponse(QuerySnapshot snapshot) {
+  InvitationPendingResponse _invitationPendingResponse(QuerySnapshot<Map<String, dynamic>> snapshot) {
     return InvitationPendingResponse(
         emailOfInviter: snapshot.docs[0].data()['owner'],
         docIdOfInviter: snapshot.docs[0].data()['docId']);
@@ -153,7 +153,7 @@ class DatabaseService {
         .map(_idOfListInUseFromSnapshot);
   }
 
-  ListInUse _idOfListInUseFromSnapshot(DocumentSnapshot snapshot) {
+  ListInUse _idOfListInUseFromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return ListInUseId(
         ownerOfListInUse: snapshot.data()['ownerOfListInUse'],
         docIdOfListInUse: snapshot.data()['docIdOfListInUse']);
