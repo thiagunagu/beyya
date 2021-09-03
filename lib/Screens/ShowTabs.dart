@@ -1,4 +1,5 @@
 import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -317,6 +318,10 @@ class _ShowTabsState extends State<ShowTabs> {
                                 statusMessage: 'Signing out..',
                               );
                             });
+                        Provider.of<UserTypeProvider>(
+                            context,
+                            listen: false)
+                            .setConvertedUserToTrue();
                         await AuthService().signOut();
                       } catch (e, s) {
                         await FirebaseCrashlytics.instance

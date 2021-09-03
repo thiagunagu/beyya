@@ -1,4 +1,3 @@
-import 'package:beyya/Services/AuthService.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -31,7 +30,6 @@ class ErrorScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(onPressed: ()async{ await AuthService().signOut();}, child: Text('Sign out'),),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(

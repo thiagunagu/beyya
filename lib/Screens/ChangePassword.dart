@@ -1,3 +1,4 @@
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -175,6 +176,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                               .changePassword(
                                   password: _newPassword.text.trim())
                               .then((value) {
+                            Provider.of<UserTypeProvider>(
+                                context,
+                                listen: false)
+                                .setConvertedUserToTrue();
                             _auth.signOut();
                           });
                         } catch (e, s) {
