@@ -14,15 +14,13 @@ import 'package:beyya/Models/InvitationPendingResponse.dart';
 import 'package:beyya/Models/SignedInUser.dart';
 import 'package:beyya/Models/UserDocument.dart';
 
-import 'package:beyya/CustomWidgets/ErrorAlert.dart';
-import 'package:beyya/CustomWidgets/StatusAlert.dart';
 import 'package:beyya/CustomWidgets/StoreFilterDropdown.dart';
 
 import 'package:beyya/Screens/AddItem.dart';
 import 'package:beyya/Screens/CheckList.dart';
 import 'package:beyya/Screens/StarredItemsTab.dart';
 
-import 'package:beyya/Services/AuthService.dart';
+
 
 class ShowTabs extends StatefulWidget {
   @override
@@ -295,47 +293,51 @@ class _ShowTabsState extends State<ShowTabs> {
                 ? SizedBox()
                 : ListTile(
                     leading: Icon(Icons.settings),
-                    title: Text('Settings'),
+                    title: Text('Profile'),
                     onTap: () {
                       Navigator.of(context).pop();
+                      Provider.of<UserTypeProvider>(
+                          context,
+                          listen: false)
+                          .setConvertedUserToTrue();
                       Navigator.pushNamed(context, '/Settings');
                     }),
-            userEmail == 'anonymousUser'
-                ? SizedBox()
-                : ListTile(
-                    leading: Icon(Icons.exit_to_app),
-                    title: Text('Sign out'),
-                    onTap: () async {
-                      try {
-                        await showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              Future.delayed(Duration(seconds: 2), () {
-                                Navigator.of(context).pop(true);
-                              });
-                              return StatusAlert(
-                                statusMessage: 'Signing out..',
-                              );
-                            });
-                        Provider.of<UserTypeProvider>(
-                            context,
-                            listen: false)
-                            .setConvertedUserToTrue();
-                        await AuthService().signOut();
-                      } catch (e, s) {
-                        await FirebaseCrashlytics.instance
-                            .log('Sign out button pressed');
-                        await FirebaseCrashlytics.instance.recordError(e, s,
-                            reason: 'Sign out button pressed');
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ErrorAlert(errorMessage: e.toString());
-                            });
-                      } //signs out
-                    },
-                  )
+            // userEmail == 'anonymousUser'
+            //     ? SizedBox()
+            //     : ListTile(
+            //         leading: Icon(Icons.exit_to_app),
+            //         title: Text('Sign out'),
+            //         onTap: () async {
+            //           try {
+            //             await showDialog(
+            //                 barrierDismissible: false,
+            //                 context: context,
+            //                 builder: (context) {
+            //                   Future.delayed(Duration(seconds: 2), () {
+            //                     Navigator.of(context).pop(true);
+            //                   });
+            //                   return StatusAlert(
+            //                     statusMessage: 'Signing out..',
+            //                   );
+            //                 });
+            //             Provider.of<UserTypeProvider>(
+            //                 context,
+            //                 listen: false)
+            //                 .setConvertedUserToTrue();
+            //             await AuthService().signOut();
+            //           } catch (e, s) {
+            //             await FirebaseCrashlytics.instance
+            //                 .log('Sign out button pressed');
+            //             await FirebaseCrashlytics.instance.recordError(e, s,
+            //                 reason: 'Sign out button pressed');
+            //             showDialog(
+            //                 context: context,
+            //                 builder: (BuildContext context) {
+            //                   return ErrorAlert(errorMessage: e.toString());
+            //                 });
+            //           } //signs out
+            //         },
+            //       )
           ],
         ),
       ),
