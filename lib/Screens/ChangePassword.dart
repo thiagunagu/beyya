@@ -57,8 +57,6 @@ class _ChangePasswordState extends State<ChangePassword> {
             side: BorderSide(color: Colors.red)));
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Change password'),

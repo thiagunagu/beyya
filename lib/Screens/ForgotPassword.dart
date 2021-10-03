@@ -31,8 +31,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             side: BorderSide(color: Colors.red)));
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Text('Reset Password'),
       ),
       body: SafeArea(

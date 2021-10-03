@@ -30,7 +30,6 @@ class _AlertState extends State<Alert> {
 
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Alert'),

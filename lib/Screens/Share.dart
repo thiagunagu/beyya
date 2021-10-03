@@ -27,8 +27,6 @@ class _ShareState extends State<Share> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Share'),

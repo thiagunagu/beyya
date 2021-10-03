@@ -51,7 +51,6 @@ class _RegisterState extends State<Register> {
             side: BorderSide(color: Colors.red)));
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
         title: Text('Sign up'),
 
       ),

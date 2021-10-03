@@ -11,8 +11,6 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Settings'),

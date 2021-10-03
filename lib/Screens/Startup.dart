@@ -9,9 +9,14 @@ class Startup extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Register(),
-      theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
-        primaryColor: Colors.red[500],
-        accentColor: Colors.red[500],
+      theme: ThemeData(
+        indicatorColor: Colors.white,
+        primaryColor: Colors.red[500], colorScheme: ColorScheme.fromSwatch().copyWith(primary: Colors.red[500],secondary: Colors.red[500]),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: Colors.blueAccent, // This is a custom color variable
+          ),
+        ),
       ),
       routes: {
         '/Login': (context) => Login(),

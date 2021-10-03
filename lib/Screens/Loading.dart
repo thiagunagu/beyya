@@ -7,9 +7,16 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
+      theme: ThemeData(
+        indicatorColor: Colors.white,
         primaryColor: Colors.red[500],
-        accentColor: Colors.red[500],
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(primary: Colors.red[500], secondary: Colors.red[500]),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: Colors.blueAccent, // This is a custom color variable
+          ),
+        ),
       ),
       home: Scaffold(
         backgroundColor: Colors.red[500],

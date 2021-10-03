@@ -34,8 +34,6 @@ class DeleteAccount extends StatelessWidget {
 
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Delete account'),

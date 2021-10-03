@@ -22,8 +22,6 @@ class ShowCategories extends StatelessWidget {
     bool _numOfCategoriesLimitReached = false;
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Categories'),

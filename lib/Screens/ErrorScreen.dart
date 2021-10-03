@@ -13,16 +13,21 @@ class ErrorScreen extends StatelessWidget {
     FirebaseCrashlytics.instance
         .recordError(errorMessage, null, reason: 'Error screen');
     return MaterialApp(
-      theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
+      theme: ThemeData(
           primaryColor: Colors.red[500],
-          accentColor: Colors.red[500],
+          indicatorColor: Colors.white,
           buttonBarTheme: ButtonBarThemeData(
             alignment: MainAxisAlignment.center,
-          )),
+          ),
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(primary: Colors.red[500], secondary: Colors.red[500]),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: Colors.blueAccent, // This is a custom color variable
+          ),
+        ),),
       home: Scaffold(
-        appBar:AppBar(
-  brightness: Brightness.dark,
-
+        appBar: AppBar(
           title: Text('Oops'),
         ),
         body: SafeArea(

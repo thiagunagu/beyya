@@ -40,8 +40,6 @@ class _LoginState extends State<Login> {
             side: BorderSide(color: Colors.red)));
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Text('Login'),
       ),
       body: SafeArea(

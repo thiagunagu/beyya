@@ -36,12 +36,10 @@ class _ShowTabsState extends State<ShowTabs> {
     var userEmail = Provider.of<SignedInUser>(context, listen: true).userEmail;
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         leading: Stack(
           children: [
             IconButton(
-              icon: Icon(Icons.menu),
+              icon: Icon(Icons.menu,color: Colors.white,),
               alignment: Alignment.bottomRight,
               onPressed: () => _drawerKey.currentState.openDrawer(),
             ),
@@ -94,7 +92,7 @@ class _ShowTabsState extends State<ShowTabs> {
                       )),
                 )
               : IconButton(
-                  icon: Icon(Icons.search),
+                  icon: Icon(Icons.search,color: Colors.white,),
                   onPressed: () {
                     setState(() {
                       isSearching = true;
@@ -113,7 +111,9 @@ class _ShowTabsState extends State<ShowTabs> {
             ),
           ),
         ],
-        bottom: TabBar(tabs: [
+        bottom: TabBar(
+
+            tabs: [
           Tab(
             child: Text(
               'CHECKLIST',

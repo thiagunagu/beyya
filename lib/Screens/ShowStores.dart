@@ -24,8 +24,6 @@ class ShowStores extends StatelessWidget {
     bool _numOfStoresLimitReached = false;
     return Scaffold(
       appBar:AppBar(
-  brightness: Brightness.dark,
-
         title: Container(
           alignment: Alignment.centerLeft,
           child: Text('Stores'),

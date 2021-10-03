@@ -38,8 +38,7 @@ import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 import 'Screens/Login.dart';
 import 'Screens/Register.dart';
 
-
-
+import 'package:in_app_review/in_app_review.dart';
 
 //Toggle this to cause an async error to be thrown during initialization
 // and to test that runZonedGuarded() catches the error
@@ -72,9 +71,7 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
   Future<void> _initializeFlutterFireFuture;
 
   Future<void> _testAsyncErrorOnInit() async {
-    Future<void>.delayed(const Duration(seconds: 2), () {
-
-    });
+    Future<void>.delayed(const Duration(seconds: 2), () {});
   }
 
   //Define an async function to initialize FlutterFire
@@ -132,22 +129,18 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
   }
 }
 
-
-
 class UserType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context)=>UserTypeProvider(),
+      create: (context) => UserTypeProvider(),
       child: Beyya(),
     );
   }
 }
 
-
 //Root widget; rebuilds when the auth state changes (signing in, signing out).
 class Beyya extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -160,35 +153,49 @@ class Beyya extends StatelessWidget {
               return Loading();
               break;
             case ConnectionState.active:
-              if (snapshot.data == null && Provider.of<UserTypeProvider>(context).convertedUser==null)  {
+              if (snapshot.data == null &&
+                  Provider.of<UserTypeProvider>(context).convertedUser ==
+                      null) {
                 AuthService().signInAnon();
-                Provider.of<UserTypeProvider>(context,listen: false).setConvertedUserToFalse();
+                Provider.of<UserTypeProvider>(context, listen: false)
+                    .setConvertedUserToFalse();
                 return Loading();
-              }
-              else if (snapshot.data == null && Provider.of<UserTypeProvider>(context).convertedUser==false)  {
+              } else if (snapshot.data == null &&
+                  Provider.of<UserTypeProvider>(context).convertedUser ==
+                      false) {
                 return Loading();
-              }
-              else if (snapshot.data == null && Provider.of<UserTypeProvider>(context).convertedUser==true ){
+              } else if (snapshot.data == null &&
+                  Provider.of<UserTypeProvider>(context).convertedUser ==
+                      true) {
                 return MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
-                        primaryColor: Colors.red[500],
-                        accentColor: Colors.red[500],
-                        buttonBarTheme: ButtonBarThemeData(
-                          alignment: MainAxisAlignment.center,
-                        )),
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                      indicatorColor: Colors.white,
+                      primaryColor: Colors.red[500],
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          primary: Colors.blueAccent, // This is a custom color variable
+                        ),
+                      ),
+                      buttonBarTheme: ButtonBarThemeData(
+                        alignment: MainAxisAlignment.center,
+                      ),
+                      colorScheme: ColorScheme.fromSwatch().copyWith(
+                          primary: Colors.red[500],
+                          secondary: Colors.red[500])),
                   initialRoute: '/',
                   routes: {
                     '/': (context) => Login(),
                     '/ForgotPassword': (context) => ForgotPassword(),
                     '/Login': (context) => Login(),
                     '/Register': (context) => Register(),
-                  },);
-              }
-              else if (snapshot.hasError){
-                return ErrorScreen(errorMessage: snapshot.error.toString(),);
-              }
-              else {
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return ErrorScreen(
+                  errorMessage: snapshot.error.toString(),
+                );
+              } else {
                 return Provider<SignedInUser>(
                     create: (_) => snapshot.data, child: Wrapper());
               }
@@ -206,15 +213,17 @@ class Wrapper extends StatelessWidget {
     return MultiProvider(providers: [
       StreamProvider<ListInUse>.value(
           value: DatabaseService(
-                  dbOwner: Provider.of<SignedInUser>(context,listen: true).userEmail,
-                  dbDocId: Provider.of<SignedInUser>(context,listen: true).uid)
+                  dbOwner: Provider.of<SignedInUser>(context, listen: true)
+                      .userEmail,
+                  dbDocId: Provider.of<SignedInUser>(context, listen: true).uid)
               .idOfListInUse,
           initialData: const LoadingListInUse(),
           catchError: (_, err) => ErrorFetchingListInUSe(err: err.toString())),
       StreamProvider<InvitationPendingResponse>.value(
         value: DatabaseService(
-                dbOwner: Provider.of<SignedInUser>(context,listen: true).userEmail,
-                dbDocId: Provider.of<SignedInUser>(context,listen: true).uid)
+                dbOwner:
+                    Provider.of<SignedInUser>(context, listen: true).userEmail,
+                dbDocId: Provider.of<SignedInUser>(context, listen: true).uid)
             .invitationPendingResponse,
         initialData: InvitationPendingResponse(),
         catchError: (_, err) => InvitationPendingResponse(),
@@ -234,10 +243,9 @@ class Root extends StatelessWidget {
           return Loading();
         } else if (data is ErrorFetchingListInUSe) {
           String err = data.err.toString();
+          FirebaseCrashlytics.instance.log('Error streaming list in use: $err');
           FirebaseCrashlytics.instance
-              .log('Error streaming list in use: $err');
-          FirebaseCrashlytics.instance.recordError(err, null,
-              reason: 'Error streaming list in use');
+              .recordError(err, null, reason: 'Error streaming list in use');
           return ErrorScreen(
             errorMessage: data.err.toString(),
           );
@@ -255,19 +263,26 @@ class Root extends StatelessWidget {
               ),
               ChangeNotifierProvider(
                   create: (context) => StoreFilterProvider()),
-              ChangeNotifierProvider(
-                  create: (context) => ItemFilterProvider()),
+              ChangeNotifierProvider(create: (context) => ItemFilterProvider()),
               ChangeNotifierProvider(
                   create: (context) => KeyboardHeightProvider())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(appBarTheme: AppBarTheme(brightness: Brightness.dark),
+              theme: ThemeData(
                   primaryColor: Colors.red[500],
-                  accentColor: Colors.red[500],
+                  indicatorColor: Colors.white,
                   buttonBarTheme: ButtonBarThemeData(
                     alignment: MainAxisAlignment.center,
-                  )),
+                  ),
+                  colorScheme: ColorScheme.fromSwatch().copyWith(
+                      primary: Colors.red[500], secondary: Colors.red[500]),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    primary: Colors.blueAccent, // This is a custom color variable
+                  ),
+                ),
+              ),
               initialRoute: '/',
               routes: {
                 '/': (context) =>
