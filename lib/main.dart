@@ -38,8 +38,6 @@ import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 import 'Screens/Login.dart';
 import 'Screens/Register.dart';
 
-import 'package:in_app_review/in_app_review.dart';
-
 //Toggle this to cause an async error to be thrown during initialization
 // and to test that runZonedGuarded() catches the error
 final _kshouldTestAsyncErrorOnInit = false;
