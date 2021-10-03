@@ -37,7 +37,6 @@ dependencies:
   firebase_crashlytics: ^2.2.2
   flushbar: ^1.10.4
   google_fonts: ^2.1.0
-  in_app_review: ^2.0.3
   shared_preferences: ^2.0.8
 
 
