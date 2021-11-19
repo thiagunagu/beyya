@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:provider/provider.dart';
 
@@ -100,7 +100,7 @@ class _AddStoreState extends State<AddStore> {
                                           'You have already reached the maximum number of stores allowed. Delete some unused stores to make room for new ones.',
                                       duration: Duration(seconds: 6),
                                       margin: EdgeInsets.all(8),
-                                      borderRadius: 10,
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
                                     )..show(context);
                                   } else {
                                     try {
@@ -115,7 +115,7 @@ class _AddStoreState extends State<AddStore> {
                                         message: 'Added \"$_store\"',
                                         duration: Duration(seconds: 2),
                                         margin: EdgeInsets.all(8),
-                                        borderRadius: 10,
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
                                       )..show(context);
                                       _storeController.text = '';
                                       setState(() {

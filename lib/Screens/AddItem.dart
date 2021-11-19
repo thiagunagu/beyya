@@ -1,8 +1,9 @@
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,8 @@ import 'package:beyya/Screens/StoreQuickAdd.dart';
 import 'package:beyya/Services/DatabaseServices.dart';
 import 'package:beyya/Services/KeyboardHeightProvider.dart';
 
+import 'package:in_app_review/in_app_review.dart';
+
 class AddItem extends StatefulWidget {
   @override
   _AddItemState createState() => _AddItemState();
@@ -27,6 +30,7 @@ class _AddItemState extends State<AddItem> {
   bool _numOfItemsLimitReached = false;
   bool _star = false;
   FocusNode _focusNode;
+  final InAppReview _inAppReview = InAppReview.instance;
   final _addItemKey = GlobalKey<FormState>();
   String _category;
   String _store;
@@ -80,7 +84,8 @@ class _AddItemState extends State<AddItem> {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Oops! Something went wrong. Please restart the app and try again.'),
+                    child: Text(
+                        'Oops! Something went wrong. Please restart the app and try again.'),
                   ),
                 );
               } else if (data is UserData) {
@@ -102,7 +107,7 @@ class _AddItemState extends State<AddItem> {
                   _numOfItemsLimitReached = false;
                 }
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(16,4,4,8),
+                  padding: const EdgeInsets.fromLTRB(16, 4, 4, 8),
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -115,8 +120,7 @@ class _AddItemState extends State<AddItem> {
                               controller: _itemController,
                               textCapitalization: TextCapitalization.sentences,
                               onChanged: (text) {
-                                if (text == null ||
-                                    text.isEmpty) {
+                                if (text == null || text.isEmpty) {
                                   setState(() {
                                     _nullOrInvalidItem = true;
                                   });
@@ -154,12 +158,14 @@ class _AddItemState extends State<AddItem> {
                                               'You have already reached the maximum number of items allowed. Delete some unused items to make room for new ones.',
                                           duration: Duration(seconds: 6),
                                           margin: EdgeInsets.all(8),
-                                          borderRadius: 10,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
                                         )..show(context);
                                       } else {
                                         try {
                                           await DatabaseService(
-                                                  dbDocId: data.docIdOfListInUse)
+                                                  dbDocId:
+                                                      data.docIdOfListInUse)
                                               .addItem(
                                             item: _itemController.text,
                                             store: _store ?? 'Other',
@@ -174,13 +180,28 @@ class _AddItemState extends State<AddItem> {
                                             message: 'Added \"$_item\"',
                                             duration: Duration(seconds: 2),
                                             margin: EdgeInsets.all(8),
-                                            borderRadius: 10,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           )..show(context);
                                           _focusNode.requestFocus();
                                           _itemController.text = '';
                                           setState(() {
                                             _nullOrInvalidItem = true;
                                           });
+                                          final isAvailable =
+                                              await _inAppReview.isAvailable();
+                                          if (isAvailable &&
+                                              Provider.of<UserTypeProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .launchNumber >
+                                                  6 &&
+                                              Provider.of<UserTypeProvider>(
+                                                          context,listen: false)
+                                                      .noOfDaysFromLaunch >
+                                                  6) {
+                                            _inAppReview.requestReview();
+                                          }
                                           FocusScope.of(context)
                                               .requestFocus(_focusNode);
                                         } catch (e, s) {

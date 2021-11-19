@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:provider/provider.dart';
 
@@ -152,7 +152,7 @@ class ShowCategories extends StatelessWidget {
                   'You have already reached the maximum number of categories allowed. Delete some unused categories to make room for new ones.',
               duration: Duration(seconds: 6),
               margin: EdgeInsets.all(8),
-              borderRadius: 10,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             )..show(context);
           } else {
             showModalBottomSheet(

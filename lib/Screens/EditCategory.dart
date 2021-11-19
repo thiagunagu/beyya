@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:provider/provider.dart';
 
@@ -140,7 +140,7 @@ class _EditCategoryState extends State<EditCategory> {
                                         'Updated \"$_changedCategory\"',
                                     duration: Duration(seconds: 2),
                                     margin: EdgeInsets.all(8),
-                                    borderRadius: 10,
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
                                   )..show(context);
                                 } catch (e, s) {
                                   await FirebaseCrashlytics.instance.log(

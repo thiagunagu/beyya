@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:beyya/CustomWidgets/ErrorAlert.dart';
 
@@ -75,7 +75,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 'We just emailed you a password reset link.',
                             duration: Duration(seconds: 5),
                             margin: EdgeInsets.all(8),
-                            borderRadius: 10,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           )..show(context);
                         }
                       } catch (e, s) {

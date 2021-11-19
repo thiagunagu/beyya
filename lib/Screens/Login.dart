@@ -1,5 +1,5 @@
 import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -120,7 +120,7 @@ class _LoginState extends State<Login> {
                             'Logging in..',
                             duration: Duration(seconds: 2),
                             margin: EdgeInsets.all(8),
-                            borderRadius: 10,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           )..show(context);
                           await _auth.signInWithEmail(
                               email: loginEmail.text.trim(),

@@ -17,6 +17,7 @@ class UserData implements UserDocument {
   final String docIdOfListInUse;
   final String ownerOfListInUse;
 
+
   final String removedByInviter;
 
   final List<String> categories;

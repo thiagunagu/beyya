@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,6 +21,11 @@ import 'package:beyya/Screens/CheckList.dart';
 import 'package:beyya/Screens/StarredItemsTab.dart';
 
 
+import 'package:in_app_review/in_app_review.dart';
+
+
+
+
 
 class ShowTabs extends StatefulWidget {
   @override
@@ -28,8 +33,11 @@ class ShowTabs extends StatefulWidget {
 }
 
 class _ShowTabsState extends State<ShowTabs> {
+
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   bool isSearching = false;
+  final InAppReview inAppReview = InAppReview.instance;
+
   @override
   Widget build(BuildContext context) {
     bool _numOfItemsLimitReached = false;
@@ -343,7 +351,7 @@ class _ShowTabsState extends State<ShowTabs> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async{
           if (_numOfItemsLimitReached == true) {
             Flushbar(
               flushbarPosition: FlushbarPosition.TOP,
@@ -351,7 +359,7 @@ class _ShowTabsState extends State<ShowTabs> {
                   'You have already reached the maximum number of items allowed. Delete some unused items to make room for new ones.',
               duration: Duration(seconds: 6),
               margin: EdgeInsets.all(8),
-              borderRadius: 10,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             )..show(context);
           } else {
             showModalBottomSheet(

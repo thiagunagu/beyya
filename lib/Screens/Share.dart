@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'package:provider/provider.dart';
 
@@ -143,7 +143,7 @@ class _ShareState extends State<Share> {
                         'You can share with your list with 5 people at a time. To make room for new users, remove less active users.',
                     duration: Duration(seconds: 6),
                     margin: EdgeInsets.all(8),
-                    borderRadius: 10,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                   )..show(context);
                 } else {
                   showModalBottomSheet(

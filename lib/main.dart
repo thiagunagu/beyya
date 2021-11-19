@@ -38,6 +38,8 @@ import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 import 'Screens/Login.dart';
 import 'Screens/Register.dart';
 
+
+
 //Toggle this to cause an async error to be thrown during initialization
 // and to test that runZonedGuarded() catches the error
 final _kshouldTestAsyncErrorOnInit = false;
@@ -208,6 +210,8 @@ class Beyya extends StatelessWidget {
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserTypeProvider>(context,listen: false).incrementLaunchNumber();
+    Provider.of<UserTypeProvider>(context,listen: false).calculateDaysFromFirstLaunch();
     return MultiProvider(providers: [
       StreamProvider<ListInUse>.value(
           value: DatabaseService(

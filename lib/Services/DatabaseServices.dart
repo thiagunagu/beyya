@@ -159,6 +159,7 @@ class DatabaseService {
         docIdOfListInUse: snapshot.data()['docIdOfListInUse']);
   }
 
+
   Future addItem({
     String item, //avocado, tomato, etc.
     String store, //WalMart, CostCo
