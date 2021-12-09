@@ -42,10 +42,15 @@ class CheckList extends StatelessWidget {
             _items.sort(
                 (a, b) => a.item.toLowerCase().compareTo(b.item.toLowerCase()));
             _items.forEach((item) {
-              if (item.store ==
+              if ((item.store ==
                       Provider.of<StoreFilterProvider>(context).storeFilter ||
                   Provider.of<StoreFilterProvider>(context).storeFilter ==
-                      'All stores'&&item.item.toLowerCase().split(' ').any((word) => word.startsWith(Provider.of<ItemFilterProvider>(context).itemFilter))) {
+                      'All stores')&& Provider.of<ItemFilterProvider>(context)
+                      .itemFilter
+                      .any((filter) => item.item.toLowerCase()
+                      .split(' ')
+                      .any((word) => word.contains(
+                      filter)))) {
                 _categoriesInUse.add(item.category);
               }
             });
@@ -103,7 +108,12 @@ class CheckList extends StatelessWidget {
                       return _categoriesInUse[categoryIndex] ==
                                   _items[itemIndex]
                                       .category && //filter for _items just under this category
-                          _items[itemIndex].item.toLowerCase().split(' ').any((word) => word.startsWith(Provider.of<ItemFilterProvider>(context).itemFilter))&&
+                          Provider.of<ItemFilterProvider>(context)
+                              .itemFilter
+                              .any((filter) =>_items[itemIndex].item.toLowerCase()
+                              .split(' ')
+                              .any((word) => word.contains(
+                              filter)))&&
                               (Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
                                       _items[itemIndex]

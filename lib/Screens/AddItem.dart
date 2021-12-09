@@ -1,3 +1,4 @@
+import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
 import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
 import 'package:flutter/material.dart';
 
@@ -120,6 +121,8 @@ class _AddItemState extends State<AddItem> {
                               controller: _itemController,
                               textCapitalization: TextCapitalization.sentences,
                               onChanged: (text) {
+                                Provider.of<ItemFilterProvider>(context, listen: false)
+                                    .changeItemFilter(newValue: text.toLowerCase());
                                 if (text == null || text.isEmpty) {
                                   setState(() {
                                     _nullOrInvalidItem = true;
@@ -133,7 +136,7 @@ class _AddItemState extends State<AddItem> {
                                 }
                               },
                               decoration: InputDecoration.collapsed(
-                                  hintText: 'Add item'),
+                                  hintText: 'Search/Add'),
                             ),
                           ),
                           IconButton(

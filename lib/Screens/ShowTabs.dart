@@ -35,7 +35,6 @@ class ShowTabs extends StatefulWidget {
 class _ShowTabsState extends State<ShowTabs> {
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  bool isSearching = false;
   final InAppReview inAppReview = InAppReview.instance;
 
   @override
@@ -66,48 +65,48 @@ class _ShowTabsState extends State<ShowTabs> {
             )
           ],
         ),
-        title: Container(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-          alignment: Alignment.centerRight,
-          child: isSearching
-              ? TextField(
-                  maxLines: 1,
-                  textAlignVertical: TextAlignVertical.center,
-                  autofocus: true,
-                  onChanged: (newValue) {
-                    Provider.of<ItemFilterProvider>(context, listen: false)
-                        .changeItemFilter(newValue: newValue.toLowerCase());
-                  },
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.all(12.0),
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(const Radius.circular(5.0))),
-                      filled: true,
-                      fillColor: Colors.white,
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.close),
-                        color: Colors.grey,
-                        onPressed: () {
-                          Provider.of<ItemFilterProvider>(context,
-                                  listen: false)
-                              .changeItemFilter(newValue: '');
-                          setState(() {
-                            isSearching = false;
-                          });
-                        },
-                      )),
-                )
-              : IconButton(
-                  icon: Icon(Icons.search,color: Colors.white,),
-                  onPressed: () {
-                    setState(() {
-                      isSearching = true;
-                    });
-                  },
-                ),
-        ),
+        // title: Container(
+        //   padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        //   alignment: Alignment.centerRight,
+        //   child: isSearching
+        //       ? TextField(
+        //           maxLines: 1,
+        //           textAlignVertical: TextAlignVertical.center,
+        //           autofocus: true,
+        //           onChanged: (newValue) {
+        //             Provider.of<ItemFilterProvider>(context, listen: false)
+        //                 .changeItemFilter(newValue: newValue.toLowerCase());
+        //           },
+        //           decoration: InputDecoration(
+        //               isDense: true,
+        //               contentPadding: EdgeInsets.all(12.0),
+        //               border: OutlineInputBorder(
+        //                   borderRadius:
+        //                       BorderRadius.all(const Radius.circular(5.0))),
+        //               filled: true,
+        //               fillColor: Colors.white,
+        //               suffixIcon: IconButton(
+        //                 icon: Icon(Icons.close),
+        //                 color: Colors.grey,
+        //                 onPressed: () {
+        //                   Provider.of<ItemFilterProvider>(context,
+        //                           listen: false)
+        //                       .changeItemFilter(newValue: '');
+        //                   setState(() {
+        //                     isSearching = false;
+        //                   });
+        //                 },
+        //               )),
+        //         )
+        //       : IconButton(
+        //           icon: Icon(Icons.search,color: Colors.white,),
+        //           onPressed: () {
+        //             setState(() {
+        //               isSearching = true;
+        //             });
+        //           },
+        //         ),
+        // ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
@@ -366,7 +365,8 @@ class _ShowTabsState extends State<ShowTabs> {
               context: context,
               isScrollControlled: true,
               builder: (context) => SingleChildScrollView(child: AddItem()),
-            );
+            ).whenComplete(() => Provider.of<ItemFilterProvider>(context, listen: false)
+                .changeItemFilter(newValue:''));
           }
         },
       ),

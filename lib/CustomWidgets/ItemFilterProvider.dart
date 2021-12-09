@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ItemFilterProvider extends ChangeNotifier {
-  String itemFilter = '';
+  List<String> itemFilter = [''];
   void changeItemFilter({newValue}) {
-    itemFilter = newValue;
+    itemFilter = newValue.split(' ');
     notifyListeners();
   }
 }
