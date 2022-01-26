@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,11 +21,7 @@ import 'package:beyya/Screens/AddItem.dart';
 import 'package:beyya/Screens/CheckList.dart';
 import 'package:beyya/Screens/StarredItemsTab.dart';
 
-
 import 'package:in_app_review/in_app_review.dart';
-
-
-
 
 
 class ShowTabs extends StatefulWidget {
@@ -33,20 +30,36 @@ class ShowTabs extends StatefulWidget {
 }
 
 class _ShowTabsState extends State<ShowTabs> {
-
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   final InAppReview inAppReview = InAppReview.instance;
+  bool bottomSheetActive = false;
+  double bottomSheetHeight=0;
+  final bottomSheetKey = GlobalKey();
+
 
   @override
   Widget build(BuildContext context) {
     bool _numOfItemsLimitReached = false;
     var userEmail = Provider.of<SignedInUser>(context, listen: true).userEmail;
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final sheetHeight=bottomSheetKey.currentContext?.size?.height??0;
+      if(sheetHeight!=bottomSheetHeight&&bottomSheetActive){
+        setState(() {
+          bottomSheetHeight=sheetHeight;
+        });
+      }
+    });
+
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         leading: Stack(
           children: [
             IconButton(
-              icon: Icon(Icons.menu,color: Colors.white,),
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
               alignment: Alignment.bottomRight,
               onPressed: () => _drawerKey.currentState.openDrawer(),
             ),
@@ -118,9 +131,7 @@ class _ShowTabsState extends State<ShowTabs> {
             ),
           ),
         ],
-        bottom: TabBar(
-
-            tabs: [
+        bottom: TabBar(tabs: [
           Tab(
             child: Text(
               'CHECKLIST',
@@ -170,9 +181,12 @@ class _ShowTabsState extends State<ShowTabs> {
           )
         ]),
       ),
-      body: SafeArea(
-        child: TabBarView(
-          children: <Widget>[CheckList(), StarredItemsTab()],
+      body: Padding(
+        padding: EdgeInsets.only(bottom: bottomSheetHeight??0),
+        child: SafeArea(
+          child: TabBarView(
+            children: <Widget>[CheckList(), StarredItemsTab()],
+          ),
         ),
       ),
       key: _drawerKey,
@@ -182,7 +196,7 @@ class _ShowTabsState extends State<ShowTabs> {
           children: <Widget>[
             userEmail == 'anonymousUser'
                 ? Container(
-                    height: MediaQuery.of(context).padding.top*2,
+                    height: MediaQuery.of(context).padding.top * 2,
                     child: DrawerHeader(
                       child: Container(),
                       decoration: BoxDecoration(
@@ -303,9 +317,7 @@ class _ShowTabsState extends State<ShowTabs> {
                     title: Text('Profile'),
                     onTap: () {
                       Navigator.of(context).pop();
-                      Provider.of<UserTypeProvider>(
-                          context,
-                          listen: false)
+                      Provider.of<UserTypeProvider>(context, listen: false)
                           .setConvertedUserToTrue();
                       Navigator.pushNamed(context, '/Settings');
                     }),
@@ -348,28 +360,54 @@ class _ShowTabsState extends State<ShowTabs> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async{
-          if (_numOfItemsLimitReached == true) {
-            Flushbar(
-              flushbarPosition: FlushbarPosition.TOP,
-              message:
-                  'You have already reached the maximum number of items allowed. Delete some unused items to make room for new ones.',
-              duration: Duration(seconds: 6),
-              margin: EdgeInsets.all(8),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            )..show(context);
-          } else {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => SingleChildScrollView(child: AddItem()),
-            ).whenComplete(() => Provider.of<ItemFilterProvider>(context, listen: false)
-                .changeItemFilter(newValue:''));
-          }
-        },
-      ),
+      floatingActionButton: Builder(builder: (context) {
+        return FloatingActionButton(
+          child: bottomSheetActive ? Icon(Icons.close) : Icon(FontAwesome5.search_plus),
+          onPressed: () async {
+            if (!bottomSheetActive) {
+              if (_numOfItemsLimitReached == true) {
+                Flushbar(
+                  flushbarPosition: FlushbarPosition.TOP,
+                  message:
+                      'You have already reached the maximum number of items allowed. Delete some unused items to make room for new ones.',
+                  duration: Duration(seconds: 6),
+                  margin: EdgeInsets.all(8),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                )..show(context);
+              } else {
+                var bottomSheetController = showBottomSheet(
+                    context: context,
+                    builder: (context) =>
+                        SingleChildScrollView(key:bottomSheetKey,child: AddItem()));
+                bottomSheetController.closed.then((value) {
+                  setState(() {
+                    bottomSheetActive = false;
+                    bottomSheetHeight=0;
+                  });
+                  Provider.of<ItemFilterProvider>(context, listen: false)
+                      .changeItemFilter(newValue:'');
+                  // Provider.of<KeyboardHeightProvider>(context,listen: false)
+                  //     .setKeyboardHeight(8.0);
+                });
+                setState(() {
+                  bottomSheetActive = true;
+                });
+              }
+            } else {
+              Navigator.pop(context);
+              setState(() {
+                bottomSheetActive = false;
+                bottomSheetHeight=0;
+              });
+              Provider.of<ItemFilterProvider>(context, listen: false)
+                  .changeItemFilter(newValue:'');
+              // Provider.of<KeyboardHeightProvider>(context,listen: false)
+              //     .setKeyboardHeight(0.0);
+
+            }
+          },
+        );
+      }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

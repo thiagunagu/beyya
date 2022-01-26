@@ -11,8 +11,6 @@ import 'package:beyya/CustomWidgets/ErrorAlert.dart';
 import 'package:beyya/Models/UserDocument.dart';
 
 import 'package:beyya/Services/DatabaseServices.dart';
-import 'package:beyya/Services/KeyboardHeightProvider.dart';
-
 import 'package:beyya/Screens/CategoryQuickAdd.dart';
 import 'package:beyya/Screens/StoreQuickAdd.dart';
 
@@ -65,10 +63,10 @@ class _EditItemState extends State<EditItem> {
 
   @override
   Widget build(BuildContext context) {
-    if (_editItemFocusNode.hasFocus) {
-      Provider.of<KeyboardHeightProvider>(context, listen: false)
-          .setKeyboardHeight(MediaQuery.of(context).viewInsets.bottom);
-    }
+    // if (_editItemFocusNode.hasFocus) {
+    //   Provider.of<KeyboardHeightProvider>(context, listen: false)
+    //       .setKeyboardHeight(MediaQuery.of(context).viewInsets.bottom);
+    // }
 
     return Form(
       key: _editItemKey,
@@ -85,9 +83,7 @@ class _EditItemState extends State<EditItem> {
               left: 20.0,
               right: 8.0,
               bottom:
-                  Provider.of<KeyboardHeightProvider>(context, listen: false)
-                          .keyboardHeight ??
-                      MediaQuery.of(context).viewInsets.bottom),
+                  8.0),
           child: Consumer<UserDocument>(
             builder: (_, data, __) {
               if (data is LoadingUserDocument) {

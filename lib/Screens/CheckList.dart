@@ -49,7 +49,7 @@ class CheckList extends StatelessWidget {
                       .itemFilter
                       .any((filter) => item.item.toLowerCase()
                       .split(' ')
-                      .any((word) => word.contains(
+                      .any((word) => word.startsWith(
                       filter)))) {
                 _categoriesInUse.add(item.category);
               }
@@ -112,7 +112,7 @@ class CheckList extends StatelessWidget {
                               .itemFilter
                               .any((filter) =>_items[itemIndex].item.toLowerCase()
                               .split(' ')
-                              .any((word) => word.contains(
+                              .any((word) => word.startsWith(
                               filter)))&&
                               (Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==

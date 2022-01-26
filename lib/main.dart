@@ -30,7 +30,6 @@ import 'package:beyya/Screens/ShowTabs.dart';
 
 import 'package:beyya/Services/AuthService.dart';
 import 'package:beyya/Services/DatabaseServices.dart';
-import 'package:beyya/Services/KeyboardHeightProvider.dart';
 
 import 'package:beyya/CustomWidgets/StoreFilterDropdown.dart';
 import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
@@ -266,8 +265,8 @@ class Root extends StatelessWidget {
               ChangeNotifierProvider(
                   create: (context) => StoreFilterProvider()),
               ChangeNotifierProvider(create: (context) => ItemFilterProvider()),
-              ChangeNotifierProvider(
-                  create: (context) => KeyboardHeightProvider())
+              // ChangeNotifierProvider(
+              //     create: (context) => KeyboardHeightProvider())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

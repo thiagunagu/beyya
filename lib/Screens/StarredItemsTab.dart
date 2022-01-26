@@ -56,7 +56,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                               .itemFilter
                               .any((filter) => item.item.toLowerCase()
                               .split(' ')
-                              .any((word) => word.contains(
+                              .any((word) => word.startsWith(
                               filter))))) {
                 _categoriesInUse.add(item.category);
               }
@@ -120,7 +120,7 @@ class _StarredItemsTabState extends State<StarredItemsTab> {
                                       .item
                                       .toLowerCase()
                                       .split(' ')
-                                      .any((word) => word.contains(
+                                      .any((word) => word.startsWith(
                                           filter))) && //filter for _items just under this category
                               (Provider.of<StoreFilterProvider>(context)
                                           .storeFilter ==
