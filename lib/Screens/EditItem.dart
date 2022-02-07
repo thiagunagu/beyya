@@ -83,7 +83,7 @@ class _EditItemState extends State<EditItem> {
               left: 20.0,
               right: 8.0,
               bottom:
-                  8.0),
+              MediaQuery.of(context).viewInsets.bottom),
           child: Consumer<UserDocument>(
             builder: (_, data, __) {
               if (data is LoadingUserDocument) {
