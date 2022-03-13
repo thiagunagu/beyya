@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
@@ -24,20 +22,18 @@ import 'package:beyya/Screens/ErrorScreen.dart';
 import 'package:beyya/Screens/ForgotPassword.dart';
 import 'package:beyya/Screens/Share.dart';
 import 'package:beyya/Screens/Loading.dart';
+import 'package:beyya/Screens/Login.dart';
 import 'package:beyya/Screens/ShowCategories.dart';
 import 'package:beyya/Screens/ShowStores.dart';
 import 'package:beyya/Screens/ShowTabs.dart';
+import 'package:beyya/Screens/Register.dart';
 
 import 'package:beyya/Services/AuthService.dart';
 import 'package:beyya/Services/DatabaseServices.dart';
 
 import 'package:beyya/CustomWidgets/StoreFilterDropdown.dart';
 import 'package:beyya/CustomWidgets/ItemFilterProvider.dart';
-
-import 'Screens/Login.dart';
-import 'Screens/Register.dart';
-
-
+import 'package:beyya/CustomWidgets/UserTypeProvider.dart';
 
 //Toggle this to cause an async error to be thrown during initialization
 // and to test that runZonedGuarded() catches the error
@@ -52,7 +48,6 @@ main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  // SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   runZonedGuarded(() {
     runApp(InitializeFirebase());

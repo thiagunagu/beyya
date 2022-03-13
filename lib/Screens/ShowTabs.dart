@@ -362,7 +362,7 @@ class _ShowTabsState extends State<ShowTabs> {
       ),
       floatingActionButton: Builder(builder: (context) {
         return FloatingActionButton(
-          child: bottomSheetActive ? Icon(Icons.close) : Icon(FontAwesome5.search_plus),
+          child: bottomSheetActive ? Icon(Icons.close) : Icon(Icons.add),
           onPressed: () async {
             if (!bottomSheetActive) {
               if (_numOfItemsLimitReached == true) {
