@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'package:another_flushbar/flushbar.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
