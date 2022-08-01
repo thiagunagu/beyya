@@ -25,6 +25,11 @@ class _SendInviteState extends State<SendInvite> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        elevation: 4.0,
+        primary: Colors.red[500],
+        shape: StadiumBorder());
     final _inviterDb = DatabaseService(
         dbDocId: Provider.of<SignedInUser>(context, listen: false).uid);
     return Form(
@@ -77,10 +82,16 @@ class _SendInviteState extends State<SendInvite> {
                           flushbarPosition: FlushbarPosition.TOP,
                           message:
                               'Invite sent\. Ask $_inviteeEmail to login to Beyya to see your invite.',
-                          duration: Duration(seconds: 6),
                           margin: EdgeInsets.all(8),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
+                          mainButton: TextButton(
+                            child: Text('Ok'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
                         )..show(context);
+
                         _inviteeEmailController.text = '';
                       }
                     } catch (e, s) {

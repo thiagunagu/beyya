@@ -77,7 +77,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       alignment: Alignment.centerRight,
                       children: [
                         TextFormField(
-                          obscureText: true,
+                          obscureText: _obscureCurrentPassword,
                           controller: _currentPassword,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.lock_outline),
@@ -99,7 +99,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       alignment: Alignment.centerRight,
                       children: [
                         TextFormField(
-                          obscureText: true,
+                          obscureText: _obscurePassword,
                           controller: _newPassword,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.lock_outline),
@@ -127,7 +127,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       alignment: Alignment.centerRight,
                       children: [
                         TextFormField(
-                          obscureText: true,
+                          obscureText: _obscureConfirmPassword,
                           controller: _confirmNewPassword,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.lock_outline),

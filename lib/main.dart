@@ -15,14 +15,14 @@ import 'package:beyya/Models/SignedInUser.dart';
 import 'package:beyya/Models/UserDocument.dart';
 
 import 'package:beyya/Screens/Alert.dart';
-import 'package:beyya/Screens/Settings.dart';
 import 'package:beyya/Screens/ChangePassword.dart';
 import 'package:beyya/Screens/DeleteAccount.dart';
 import 'package:beyya/Screens/ErrorScreen.dart';
 import 'package:beyya/Screens/ForgotPassword.dart';
-import 'package:beyya/Screens/Share.dart';
 import 'package:beyya/Screens/Loading.dart';
 import 'package:beyya/Screens/Login.dart';
+import 'package:beyya/Screens/Settings.dart';
+import 'package:beyya/Screens/Share.dart';
 import 'package:beyya/Screens/ShowCategories.dart';
 import 'package:beyya/Screens/ShowStores.dart';
 import 'package:beyya/Screens/ShowTabs.dart';
@@ -76,7 +76,7 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
       //Force enable crashlytics if we are testing it
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     } else {
-      //Else only enable it in non-dbug builds.
+      //Else only enable it in non-debug builds.
       //Extend this to allow users to opt in
       await FirebaseCrashlytics.instance
           .setCrashlyticsCollectionEnabled(!kDebugMode);
@@ -111,7 +111,6 @@ class _InitializeFirebaseState extends State<InitializeFirebase> {
                 errorMessage: snapshot.error.toString(),
               );
             } else {
-              //return Beyya();
               return UserType();
             }
             break;
@@ -168,7 +167,8 @@ class Beyya extends StatelessWidget {
                       primaryColor: Colors.red[500],
                       textButtonTheme: TextButtonThemeData(
                         style: TextButton.styleFrom(
-                          primary: Colors.blueAccent, // This is a custom color variable
+                          primary: Colors
+                              .blueAccent, // This is a custom color variable
                         ),
                       ),
                       buttonBarTheme: ButtonBarThemeData(
@@ -204,8 +204,10 @@ class Beyya extends StatelessWidget {
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Provider.of<UserTypeProvider>(context,listen: false).incrementLaunchNumber();
-    Provider.of<UserTypeProvider>(context,listen: false).calculateDaysFromFirstLaunch();
+    Provider.of<UserTypeProvider>(context, listen: false)
+        .incrementLaunchNumber();
+    Provider.of<UserTypeProvider>(context, listen: false)
+        .calculateDaysFromFirstLaunch();
     return MultiProvider(providers: [
       StreamProvider<ListInUse>.value(
           value: DatabaseService(
@@ -260,22 +262,21 @@ class Root extends StatelessWidget {
               ChangeNotifierProvider(
                   create: (context) => StoreFilterProvider()),
               ChangeNotifierProvider(create: (context) => ItemFilterProvider()),
-              // ChangeNotifierProvider(
-              //     create: (context) => KeyboardHeightProvider())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                  primaryColor: Colors.red[500],
-                  indicatorColor: Colors.white,
-                  buttonBarTheme: ButtonBarThemeData(
-                    alignment: MainAxisAlignment.center,
-                  ),
-                  colorScheme: ColorScheme.fromSwatch().copyWith(
-                      primary: Colors.red[500], secondary: Colors.red[500]),
+                primaryColor: Colors.red[500],
+                indicatorColor: Colors.white,
+                buttonBarTheme: ButtonBarThemeData(
+                  alignment: MainAxisAlignment.center,
+                ),
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                    primary: Colors.red[500], secondary: Colors.red[500]),
                 textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
-                    primary: Colors.blueAccent, // This is a custom color variable
+                    primary:
+                        Colors.blueAccent, // This is a custom color variable
                   ),
                 ),
               ),
