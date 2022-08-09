@@ -25,11 +25,6 @@ class _SendInviteState extends State<SendInvite> {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 14, color: Colors.white),
-        elevation: 4.0,
-        primary: Colors.red[500],
-        shape: StadiumBorder());
     final _inviterDb = DatabaseService(
         dbDocId: Provider.of<SignedInUser>(context, listen: false).uid);
     return Form(
